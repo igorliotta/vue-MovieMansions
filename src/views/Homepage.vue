@@ -32,7 +32,7 @@ export default {
 
 <template >
 
-    <div class="hero">
+    <div class="hero-c">
         <div class="text-wrap">
             <div class="title">
                 <span class="t-green">Movie</span>
@@ -56,7 +56,7 @@ export default {
 
 <style lang="scss" scoped>
 
-.hero {
+.hero-c {
     background-image: url(../assets/home_bg.jpeg);
     background-size: cover;
     background-position: bottom;
