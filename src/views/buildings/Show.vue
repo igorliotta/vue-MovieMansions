@@ -6,12 +6,12 @@ export default {
     data() {
         return {
             building: null,
-            BASE_URL: 'http://127.0.0.1:8000/api'
+            store: store,
         };
     },
   methods: {
     fetchProject() {
-        axios.get(`${this.BASE_URL}/buildings/${this.$route.params.slug}`)
+        axios.get(`${store.BASE_URL}/buildings/${this.$route.params.slug}`)
             .then((res) => {
            //console.log(res.data)
                 this.building = res.data.building;
