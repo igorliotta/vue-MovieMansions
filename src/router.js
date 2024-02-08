@@ -27,6 +27,7 @@ const router = createRouter({
 			name: 'buildings.show',
 			component: BuildingsShow,
 		},
+		
     ]
 })
 
