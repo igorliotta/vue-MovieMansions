@@ -20,18 +20,15 @@ export default {
                     <img class="logo" src="../assets/logo.png">
                 </li>
                 <li>
-                    <router-link :to="{name:'home'}">Home</router-link>
+                    <router-link :to="{name:'home'}">Home </router-link>
                 </li>
             </ul>
             <ul class="links">
-                <li>
-                    <router-link :to="{name:'contacts'}">Contatti</router-link>
+                <li class="m-sx">
+                    <router-link :to="{name:'buildings.index'}">Prenota</router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'buildings.index'}">Portfolio</router-link>
-                </li>
-                <li>
-                    <a href="http://127.0.0.1:8000/login" target="_blank">Admin Zone</a>
+                    <a href="http://127.0.0.1:8000/register" target="_blank">Registra Immobile</a>
                 </li>
             </ul>
         </div>
@@ -40,17 +37,15 @@ export default {
 </template>
 
 <style lang="scss">
-header{
-   padding-bottom: 20px; 
-}
 
 .navbar {
     display: flex; 
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center; 
-    padding: 10px 0; 
-    background-color: #1C506E;
-    color:  #F18908;
+    padding: 10px 40px; 
+    background-color: white;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.333);
+    color: #5A8D80;
     height: 50px;
     position: fixed;
     top:0;
@@ -62,24 +57,35 @@ header{
         display: flex; 
         gap: 10px; 
 
+        .m-sx {
+            margin-right: 10px; 
+        }
+
+        li {
+        display: flex; 
+        justify-content: center;
+        align-items: center;
+        }
+
+
         li:hover {
-            color: #FEC572;
+            color: #C6B35D;
         }
     }
 }
 
 .navbar:hover {
-    height: 70px;
-    font-size: 20px;
+    height: 60px;
+    font-size: 18px;
 }
 
 .logo {
-    width: 25px; 
+    width: 50px; 
     transform: rotate(0);
     transition: transform 0.5s;
 }
 
 .logo:hover{
-    transform: rotate(180deg);
+    transform: rotate(360deg);
 }
 </style>

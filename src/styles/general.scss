@@ -16,10 +16,21 @@ a {
 }
 
 body {
-
-    font-family: 'Chakra Petch', sans-serif;
-    font-family: 'Dosis', sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    height: 100vh;
+    overflow: hidden; 
 }
+
+.main {
+    padding: 70px 20px 0px 20px; 
+    height: 100vh;
+    overflow: hidden; 
+  }
+  
+.z-ind {
+    position: sticky;
+    z-index: 100; 
+  }
 
 .container {
     max-width: 1000px;
