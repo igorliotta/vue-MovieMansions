@@ -62,15 +62,18 @@ export default {
                         'lon': store.lon,
                         'rooms': store.rooms,
                         'beds': store.beds,
+                        'services': store.services,
                         'beds_filter': store.bedsFilter,
                         'rooms_filter': store.roomsFilter,
                         'baths_filter': store.bathsFilter,
+                        'services_filter': store.servicesFilter,
                         'bathrooms': store.bathrooms,
                     },
                 })
                 .then((res) => {
-                    console.log('Risposta API:', res.data.buildings);
+                    console.log('Risposta API:', res.data.buildings, res.data.allServices);
                     store.buildings = res.data.buildings;
+                    store.services = res.data.allServices;
                 })
                 .catch((error) => {
                     console.error('Errore nella richiesta edifici:', error);
@@ -134,6 +137,13 @@ export default {
                     </option>
                 </select>
 
+                <label for="servicesFilter">Servizi:</label>
+                <!-- <input type="number" id="bathrooms" v-model="store.bathrooms" /> -->
+                <select id="servicesFilter" v-model="store.servicesFilter">
+                    <option v-for="service in store.services" :value="service.id" :key="service.id">{{ service.name }}
+                    </option>
+                </select>
+
 
                 <button @click="getCoordinatesFromAddress">Cerca Edifici</button>
             </div>
@@ -149,7 +159,7 @@ export default {
 <style lang="scss">
 .section {
     padding: 30px;
-    margin-top: 10px;
+    margin-top: 50px;
 }
 
 
