@@ -1,5 +1,32 @@
 <script>
 
+export default {
+    data() {
+        return {
+            titles : [
+                "Padme Palace",
+                "Il Padrino: la casa",
+                "Villa di Bruce Wayne",
+                "Mamma ho perso l'aereo",
+                "Scarface House", 
+                "House of Gucci",
+                "Hogwarts",
+                "Privet Drive n.4",
+                "Casa Baggins",
+                "Casa di Jep Gambardella",
+                "la Marinella di Montalbano"
+            ]
+        }
+    },
+    methods : {
+
+        showTitle(array){
+            
+        }
+    }
+
+}
+
 
 </script>
 

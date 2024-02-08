@@ -24,11 +24,11 @@ export default {
                 </li>
             </ul>
             <ul class="links">
-                <li>
-                    <router-link :to="{name:'buildings.index'}">Cerca Appartamento</router-link>
+                <li class="m-sx">
+                    <router-link :to="{name:'buildings.index'}">Prenota</router-link>
                 </li>
                 <li>
-                    <a href="http://127.0.0.1:8000/register" target="_blank">Registrati</a>
+                    <a href="http://127.0.0.1:8000/register" target="_blank">Registra Immobile</a>
                 </li>
             </ul>
         </div>
@@ -57,11 +57,16 @@ export default {
         display: flex; 
         gap: 10px; 
 
+        .m-sx {
+            margin-right: 10px; 
+        }
+
         li {
         display: flex; 
         justify-content: center;
         align-items: center;
-    }
+        }
+
 
         li:hover {
             color: #C6B35D;
