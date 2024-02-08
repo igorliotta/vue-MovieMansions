@@ -3,6 +3,7 @@ import { reactive } from "vue";
 
 export const store = reactive({
   buildings: [],
+  services: [],
   currentPage: 1,
   lastPage: 0,
   page: 0,
@@ -15,6 +16,7 @@ export const store = reactive({
   bedsFilter: all,
   roomsFilter: all,
   bathsFilter: all,
+  servicesFilter: all,
   bathrooms: null,
   BASE_URL: "http://127.0.0.1:8000/api",
 });
