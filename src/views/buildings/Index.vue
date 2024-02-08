@@ -11,22 +11,22 @@ export default {
         return {
         store,
         bedsOptions: [
-            { value: "all", label: "Tutti" },
-            { value: "range_1", label: "Fino a 25 letti" },
-            { value: "range_2", label: "Da 26 a 50 letti" },
-            { value: "range_3", label: "Più di 50 letti" },
+            { value: "all", label: "Tutti", selected: true },
+            { value: "range_1", label: "Fino a 25 letti", selected: false },
+            { value: "range_2", label: "Da 26 a 50 letti", selected: false },
+            { value: "range_3", label: "Più di 50 letti", selected: false },
         ],
         roomsOptions: [
-            { value: "all", label: "Tutti" },
-            { value: "range_1", label: "Fino a 25 stanze" },
-            { value: "range_2", label: "Da 26 a 50 stanze" },
-            { value: "range_3", label: "Più di 50 stanze" },
+            { value: "all", label: "Tutti", selected: true },
+            { value: "range_1", label: "Fino a 25 stanze", selected: false },
+            { value: "range_2", label: "Da 26 a 50 stanze",selected: false },
+            { value: "range_3", label: "Più di 50 stanze",selected: false },
         ],
         bathsOptions: [
-            { value: "all", label: "Tutti" },
-            { value: "range_1", label: "Fino a 2 bagni" },
-            { value: "range_2", label: "Da 3 a 6 bagni" },
-            { value: "range_3", label: "Più di 6 bagni" },
+            { value: "all", label: "Tutti", selected: true },
+            { value: "range_1", label: "Fino a 2 bagni",selected: false },
+            { value: "range_2", label: "Da 3 a 6 bagni", selected: false },
+            { value: "range_3", label: "Più di 6 bagni", selected: false },
         ],
         };
     },
@@ -113,93 +113,127 @@ export default {
 
 <template>
     <div class="">
-        <div class="searchbar row">
+        <div class="searchbar">
 
             <div class="address-container col-12">
-                <label for="address">Inserisci l'indirizzo</label>
+                <label class="address" for="address">Inserisci un paese, una regione o una città</label>
                 <input type="text" id="address" v-model="store.address" />
             </div>
 
-            <div class="ray-container col">
-                <label for="radius">Raggio</label>
+            <span class="filter">
+                Filtra per: 
+            </span >
 
-                <!-- <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    R
-                </button> -->
+            <div class="col-10 filters">
+
+                <div class="ray-container">
+                <label class="label" for="radius">Raggio</label>
+
                 <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    
+                    <i class="fa-solid fa-compass"></i>
                 </span>
 
                 <div class="collapse" id="collapseExample">
-                    <select v-model="store.radius">
+                    <select class="form-select form-select-sm" v-model="store.radius">
                         <option value="50000">50 km</option>
                         <option value="100000">100 km</option>
                         <option value="150000">150 km</option>
                     </select>
                 </div>
 
+                </div>
+
+                <div class="rooms-container">
+                    <label class="label" for="roomsFilter">Stanze</label>
+
+                    <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                        <i class="fa-solid fa-person-shelter"></i>
+                    </span>
+
+                    <div class="collapse" id="collapseExample1">
+                        <select class="form-select form-select-sm" id="roomsFilter" v-model="store.roomsFilter">
+                            <option
+                            v-for="option in this.roomsOptions"
+                            :value="option.value"
+                            :key="option.value"
+                            >
+                            {{ option.label }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="beds-container">
+                    <label class="label" for="bedsFilter">Letti</label>
+
+                    <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                        <i class="fa-solid fa-bed"></i>
+                    </span> 
+
+                    <div class="collapse" id="collapseExample2">
+                        <select class="form-select form-select-sm" id="bedsFilter" v-model="store.bedsFilter">
+                            <option
+                            v-for="option in this.bedsOptions"
+                            :value="option.value"
+                            :key="option.value"
+                            >
+                            {{ option.label }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="baths-container">
+                    <label class="label" for="bathsFilter">Bagni</label>
+                    
+                    <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
+                        <i class="fa-solid fa-shower"></i>
+                    </span>
+
+                    <div class="collapse" id="collapseExample3"> 
+                        <select class="form-select form-select-sm" id="bathsFilter" v-model="store.bathsFilter">
+                            <option
+                            v-for="option in this.bathsOptions"
+                            :value="option.value"
+                            :key="option.value"
+                            >
+                            {{ option.label }}
+                            </option>
+                    </select>
+                    </div>
+
+                </div>
+
+                <div class="services-container">
+                    <label class="label" for="servicesFilter">Servizi</label>
+                    
+                    <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample5">
+                        <i class="fa-solid fa-bell-concierge"></i>
+                    </span>
+
+                    <div class="collapse" id="collapseExample4">
+                        <select class="form-select form-select-sm" id="servicesFilter" v-model="store.servicesFilter">
+                            <option
+                            v-for="service in store.services"
+                            :value="service.id"
+                            :key="service.id"
+                            >
+                            {{ service.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="rooms-container col">
-                <label for="roomsFilter">Stanze</label>
-                <select id="roomsFilter" v-model="store.roomsFilter">
-                    <option
-                    v-for="option in this.roomsOptions"
-                    :value="option.value"
-                    :key="option.value"
-                    >
-                    {{ option.label }}
-                    </option>
-                </select>
-            </div>
+            
 
-            <div class="beds-container col">
-                <label for="bedsFilter">Letti</label>
-                <select id="bedsFilter" v-model="store.bedsFilter">
-                    <option
-                    v-for="option in this.bedsOptions"
-                    :value="option.value"
-                    :key="option.value"
-                    >
-                    {{ option.label }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="baths-container col">
-                <label for="bathsFilter">Bagni</label>
-                <!-- <input type="number" id="bathrooms" v-model="store.bathrooms" /> -->
-                <select id="bathsFilter" v-model="store.bathsFilter">
-                    <option
-                    v-for="option in this.bathsOptions"
-                    :value="option.value"
-                    :key="option.value"
-                    >
-                    {{ option.label }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="services-container col">
-                <label for="servicesFilter">Servizi</label>
-                <!-- <input type="number" id="bathrooms" v-model="store.bathrooms" /> -->
-                <select id="servicesFilter" v-model="store.servicesFilter">
-                    <option
-                    v-for="service in store.services"
-                    :value="service.id"
-                    :key="service.id"
-                    >
-                    {{ service.name }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="wrap-b">
+            <div class="wrap-b ">
                 <button class="button" @click="getCoordinatesFromAddress">Cerca Edifici</button>
             </div>
             
         </div>
-            <div class="section overflow-h">
+            <div class="section">
                 <div class="container">
                     <div v-if="store.buildings.length > 0" class="row cards">
                         <BuildingCard
@@ -220,21 +254,44 @@ export default {
 <style lang="scss" scoped>
 .section {
   padding: 30px;
-  margin-top: 50px;
+  margin-top: 100px;
 }
 
 .searchbar {
   position: fixed;
   z-index: 3;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.95);
   padding: 15px;
   row-gap: 5px; 
+  display: flex; 
+  flex-wrap: wrap;
+  width: 95%; 
+  margin: 0 auto; 
+  justify-content: center;
+  align-items: center;
 
-  .col {
+  .label {
     font-size: 12px; 
+    margin-right: 10px; 
+  }
+
+  .address {
+    margin-right: 20px; 
+  }
+
+  .src-icon {
+    color:  #5B8E81;
+  }
+
+  .src-icon:hover {
+    color:#D1BE68;
   }
 }
+.filters{
+    display: flex;
+    justify-content: space-around;
 
+  }
 .active {
   color: #3b7ed6;
   font-weight: bold;
@@ -266,14 +323,37 @@ export default {
   }
 }
 
+.address-container {
+    display: flex; 
     input {
         flex-grow: 1; 
     }
+}
+
+select {
+    font-size: 10px; 
+}
 
 
 .wrap-b {
     display: flex; 
     align-items: center;
     justify-content: center;
+}
+
+.filter {
+    color: #5B8E81;
+    font-weight: 400;
+}
+
+.button {
+    background-color: #5B8E81;
+    color: white; 
+    padding: 2px 10px; 
+    border-radius: 10px; 
+    border: none; 
+}
+.button:hover {
+    color: #D1BE68;
 }
 </style>

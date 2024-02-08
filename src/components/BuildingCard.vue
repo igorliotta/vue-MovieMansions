@@ -26,14 +26,11 @@
 <template>
      <div class="col-3">
         <div class="card">
-            <h2>{{ building.title }}</h2>
+            <h4>{{ building.title }}</h4>
             <p class="address">{{ building.address }}</p>
             <img v-if="building.image" class="thumb" :src="'http://127.0.0.1:8000/storage' + building.image">
             <div class="row-pic">
                 <img  v-for="image in building.images" class="preview" :src="'http://127.0.0.1:8000/storage' + image.url">
-            </div>
-            <div class="tags">
-                <p v-for="service in building.services" >{{ service.name }} </p>
             </div>
             <p class="link">
                 <router-link :to="{ name: 'buildings.show', params: { slug: building.slug }}">Dettagli</router-link>
@@ -58,11 +55,11 @@
     border-radius: 10px; 
 
     &:hover {
-        border: 3px solid  #FEC572;
+        border: 3px solid #D3BF6A;
     }
 
-    h2{
-        color : #1C506E;
+    h4{
+        color : #5B8E81;
         text-align: center;
     }
 
@@ -87,8 +84,8 @@
         margin-top: auto;
         font-size: 18px; 
         font-weight: 700;
-        color: #FEC572;
-        background-color: #1C506E;
+        color: #D3BF6A;
+        background-color:  #5B8E81;
         border-radius: 10px;
         padding: 2px 8px; 
         width: 60%;
@@ -96,6 +93,7 @@
 
     .address {
         text-align: center;
+        font-size: 12px; 
     }
 }
 
