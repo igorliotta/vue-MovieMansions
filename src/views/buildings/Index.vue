@@ -152,12 +152,13 @@ export default {
 
                     <div class="collapse" id="collapseExample1">
                         <select class="form-select form-select-sm" id="roomsFilter" v-model="store.roomsFilter">
-                            <option
+                            <option 
                             v-for="option in this.roomsOptions"
                             :value="option.value"
                             :key="option.value"
                             >
                             {{ option.label }}
+                            
                             </option>
                         </select>
                     </div>
