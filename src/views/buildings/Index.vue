@@ -136,7 +136,7 @@ export default {
 
             <div class="address-container col-12">
                 <label class="address" for="address">Inserisci un paese, una regione o una città</label>
-                <input type="text" id="address" v-model="store.address" />
+                <input class="search" type="text" id="address" v-model="store.address" />
             </div>
 
             <span class="filter">
@@ -273,6 +273,10 @@ export default {
   justify-content: center;
   align-items: center;
 
+  .search {
+    padding: 0 4px; 
+  }
+
   .label {
     font-size: 12px; 
     margin-right: 10px; 
@@ -291,6 +295,7 @@ export default {
 
   .src-icon {
     color:  #5B8E81;
+    cursor: pointer; 
   }
 
   .src-icon:hover {
