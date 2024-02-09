@@ -28,6 +28,20 @@ export default {
                 { value: 'range_2', label: 'Da 3 a 6 bagni' },
                 { value: 'range_3', label: 'Più di 6 bagni' },
             ],
+            selectedServices: [],
+            servicesOptions: [
+                { value: 'Wi-Fi', label: 'Wi-Fi' },
+                { value: 'Piscina', label: 'Piscina' },
+                { value: 'Ristorante', label: 'Ristorante' },
+                { value: 'Palestra', label: 'Palestra' },
+                { value: 'Servizio in camera', label: 'Servizio in camera' },
+                { value: 'Colazione inclusa', label: 'Colazione inclusa' },
+                { value: 'Parcheggio', label: 'Parcheggio' },
+                { value: 'Centro benessere', label: 'Centro benessere' },
+                { value: 'Navetta aeroportuale', label: 'Navetta aeroportuale' },
+                { value: 'Animali ammessi', label: 'Animali ammessi' },
+                { value: 'Reception 24 ore', label: 'Reception 24 ore' },
+            ],
         };
     },
     methods: {
@@ -66,41 +80,50 @@ export default {
                         'beds_filter': store.bedsFilter,
                         'rooms_filter': store.roomsFilter,
                         'baths_filter': store.bathsFilter,
-                        'services_filter': store.servicesFilter,
+                        // 'services_filter': store.servicesFilter,
                         'bathrooms': store.bathrooms,
+                        'services': this.selectedServices.map(service => service.value),
                     },
                 })
                 .then((res) => {
-                    console.log('Risposta API:', res.data.buildings, res.data.allServices);
+                    console.log('Risposta API:', res.data.buildings);
                     store.buildings = res.data.buildings;
-                    store.services = res.data.allServices;
+                    // store.services = res.data.allServices;
+                    // console.log(store.services);
                 })
                 .catch((error) => {
                     console.error('Errore nella richiesta edifici:', error);
                 });
+        // },
+        // getServiceId() {
+        //     for (let i = 0; i < this.store.services.length; i++) {
+        //         currentService = store.services[i];
+        //         console.log(currentService);
+        //     }
         },
-        fetchBuildings() {
-            axios
-                .get(`${ store.BASE_URL }/buildings`, {
-                    // params: {
-                    //     page: store.page,
-                    // },
-                })
-                .then((res) => {
-                    console.log(
-                        res,
-                        // res.data.results.last_page
-                    );
+        // fetchBuildings() {
+        //     axios
+        //         .get(`${ store.BASE_URL }/buildings`, {
+        //             // params: {
+        //             //     page: store.page,
+        //             // },
+        //         })
+        //         .then((res) => {
+        //             console.log(
+        //                 res,
+        //                 // res.data.results.last_page
+        //             );
                     
-                    store.buildings = res.data.buildings;
-                    // this.currentPage = res.data.results.current_page;
-                    // this.lastPage = res.data.results.last_page;
-                });
-        },
+        //             store.buildings = res.data.buildings;
+        //             // this.currentPage = res.data.results.current_page;
+        //             // this.lastPage = res.data.results.last_page;
+        //         });
+        // },
     },
     created() {
         // this.fetchBuildings();
         this.getApiBuildings();
+        
     }
 };
 </script>
@@ -137,12 +160,22 @@ export default {
                     </option>
                 </select>
 
-                <label for="servicesFilter">Servizi:</label>
-                <!-- <input type="number" id="bathrooms" v-model="store.bathrooms" /> -->
+                <!-- <label for="servicesFilter">Servizi:</label>
+                <input type="number" id="bathrooms" v-model="store.bathrooms" />
                 <select id="servicesFilter" v-model="store.servicesFilter">
-                    <option v-for="service in store.services" :value="service.id" :key="service.id">{{ service.name }}
+                    <option v-for="service in this.store.services" :value="service.id" :key="service.id">{{ service.name }}
                     </option>
-                </select>
+                </select> -->
+
+                <div>
+                    <label>Servizi:</label>
+                    <div class="services">
+                        <div class="services" v-for="service in servicesOptions" :key="service.value">
+                            <input type="checkbox" :id="service.value" v-model="selectedServices" :value="service" />
+                            <label :for="service.value">{{ service.label }}</label>
+                        </div>
+                    </div>
+                </div>
 
 
                 <button @click="getCoordinatesFromAddress">Cerca Edifici</button>
@@ -194,5 +227,12 @@ export default {
         height: 200px;
     }
 
+}
+
+.services {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 </style>
