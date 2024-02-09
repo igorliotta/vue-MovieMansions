@@ -223,24 +223,18 @@ export default {
                     </div>
 
                 </div>
-
-                <div>
-                    <label>Servizi:</label>
-                    <div class="services">
-                        <div class="services" v-for="service in servicesOptions" :key="service.value">
-                            <input type="checkbox" :id="service.value" v-model="selectedServices" :value="service" />
-                            <label :for="service.value">{{ service.label }}</label>
-                        </div>
+            </div>
+            <div class="wrap-b">
+                <button class="button" @click="getCoordinatesFromAddress">Cerca Edifici</button>
+            </div> 
+            <div class="col-12 serv">
+                <div class="services container">
+                    <div class="services form-check" v-for="service in servicesOptions" :key="service.value">
+                        <input type="checkbox" class="btn-check" name="options-outlined" :id="service.value" v-model="selectedServices" :value="service" />
+                        <label class="btn btn-outline-success label-c"  :for="service.value">{{ service.label }}</label>
                     </div>
                 </div>
-            </div>
-
-            
-
-            <div class="wrap-b ">
-                <button class="button" @click="getCoordinatesFromAddress">Cerca Edifici</button>
-            </div>
-            
+            </div>          
         </div>
             <div class="section">
                 <div class="container">
@@ -282,6 +276,13 @@ export default {
   .label {
     font-size: 12px; 
     margin-right: 10px; 
+
+  }
+
+  .btn {
+    --bs-btn-font-size: 10px;
+    --bs-btn-padding-x: 3px;
+    --bs-btn-padding-y: 2px;
   }
 
   .address {
@@ -305,7 +306,11 @@ export default {
   color: #3b7ed6;
   font-weight: bold;
 }
-
+.serv {
+    margin-top: 5px; 
+   
+}
+ 
 .cards {
   padding: 10px 20px;
   row-gap: 15px;
@@ -343,7 +348,6 @@ select {
     font-size: 10px; 
 }
 
-
 .wrap-b {
     display: flex; 
     align-items: center;
@@ -369,7 +373,9 @@ select {
 .services {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    font-size: 10px; 
+    gap: 5px;
 }
 </style>
