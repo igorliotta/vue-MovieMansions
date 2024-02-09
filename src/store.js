@@ -4,6 +4,7 @@ import { reactive } from "vue";
 export const store = reactive({
   buildings: [],
   services: [],
+  servicesIds: [],
   currentPage: 1,
   lastPage: 0,
   page: 0,

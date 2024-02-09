@@ -9,25 +9,39 @@ export default {
     },
     data() {
         return {
-        store,
-        bedsOptions: [
-            { value: "all", label: "Tutti", selected: true },
-            { value: "range_1", label: "Fino a 25 letti", selected: false },
-            { value: "range_2", label: "Da 26 a 50 letti", selected: false },
-            { value: "range_3", label: "Più di 50 letti", selected: false },
-        ],
-        roomsOptions: [
-            { value: "all", label: "Tutti", selected: true },
-            { value: "range_1", label: "Fino a 25 stanze", selected: false },
-            { value: "range_2", label: "Da 26 a 50 stanze",selected: false },
-            { value: "range_3", label: "Più di 50 stanze",selected: false },
-        ],
-        bathsOptions: [
-            { value: "all", label: "Tutti", selected: true },
-            { value: "range_1", label: "Fino a 2 bagni",selected: false },
-            { value: "range_2", label: "Da 3 a 6 bagni", selected: false },
-            { value: "range_3", label: "Più di 6 bagni", selected: false },
-        ],
+            store,
+            bedsOptions: [
+                { value: 'all', label: 'Tutti' },
+                { value: 'range_1', label: 'Fino a 25 letti' },
+                { value: 'range_2', label: 'Da 26 a 50 letti' },
+                { value: 'range_3', label: 'Più di 50 letti' },
+            ],
+            roomsOptions: [
+                { value: 'all', label: 'Tutti' },
+                { value: 'range_1', label: 'Fino a 25 stanze' },
+                { value: 'range_2', label: 'Da 26 a 50 stanze' },
+                { value: 'range_3', label: 'Più di 50 stanze' },
+            ],
+            bathsOptions: [
+                { value: 'all', label: 'Tutti' },
+                { value: 'range_1', label: 'Fino a 2 bagni' },
+                { value: 'range_2', label: 'Da 3 a 6 bagni' },
+                { value: 'range_3', label: 'Più di 6 bagni' },
+            ],
+            selectedServices: [],
+            servicesOptions: [
+                { value: 'Wi-Fi', label: 'Wi-Fi' },
+                { value: 'Piscina', label: 'Piscina' },
+                { value: 'Ristorante', label: 'Ristorante' },
+                { value: 'Palestra', label: 'Palestra' },
+                { value: 'Servizio in camera', label: 'Servizio in camera' },
+                { value: 'Colazione inclusa', label: 'Colazione inclusa' },
+                { value: 'Parcheggio', label: 'Parcheggio' },
+                { value: 'Centro benessere', label: 'Centro benessere' },
+                { value: 'Navetta aeroportuale', label: 'Navetta aeroportuale' },
+                { value: 'Animali ammessi', label: 'Animali ammessi' },
+                { value: 'Reception 24 ore', label: 'Reception 24 ore' },
+            ],
         };
     },
     methods: {
@@ -56,58 +70,63 @@ export default {
             });
         },
         getApiBuildings() {
-        axios
-            .get(`${store.BASE_URL}/buildings`, {
-            params: {
-                rad: store.radius,
-                lat: store.lat,
-                lon: store.lon,
-                rooms: store.rooms,
-                beds: store.beds,
-                services: store.services,
-                beds_filter: store.bedsFilter,
-                rooms_filter: store.roomsFilter,
-                baths_filter: store.bathsFilter,
-                services_filter: store.servicesFilter,
-                bathrooms: store.bathrooms,
-            },
-            })
-            .then((res) => {
-            console.log(
-                "Risposta API:",
-                res.data.buildings,
-                res.data.allServices
-            );
-            store.buildings = res.data.buildings;
-            store.services = res.data.allServices;
-            })
-            .catch((error) => {
-            console.error("Errore nella richiesta edifici:", error);
-            });
+            axios
+                .get(`${store.BASE_URL}/buildings`, {
+                    params: {
+                        'rad': store.radius,
+                        'lat': store.lat,
+                        'lon': store.lon,
+                        'rooms': store.rooms,
+                        'beds': store.beds,
+                        'services': store.services,
+                        'beds_filter': store.bedsFilter,
+                        'rooms_filter': store.roomsFilter,
+                        'baths_filter': store.bathsFilter,
+                        // 'services_filter': store.servicesFilter,
+                        'bathrooms': store.bathrooms,
+                        'services': this.selectedServices.map(service => service.value),
+                    },
+                })
+                .then((res) => {
+                    console.log('Risposta API:', res.data.buildings);
+                    store.buildings = res.data.buildings;
+                    // store.services = res.data.allServices;
+                    // console.log(store.services);
+                })
+                .catch((error) => {
+                    console.error('Errore nella richiesta edifici:', error);
+                });
+        // },
+        // getServiceId() {
+        //     for (let i = 0; i < this.store.services.length; i++) {
+        //         currentService = store.services[i];
+        //         console.log(currentService);
+        //     }
         },
-        fetchBuildings() {
-        axios
-            .get(`${store.BASE_URL}/buildings`, {
-            // params: {
-            //     page: store.page,
-            // },
-            })
-            .then((res) => {
-            console.log(
-                res
-                // res.data.results.last_page
-            );
-
-            store.buildings = res.data.buildings;
-            // this.currentPage = res.data.results.current_page;
-            // this.lastPage = res.data.results.last_page;
-            });
-        },
+        // fetchBuildings() {
+        //     axios
+        //         .get(`${ store.BASE_URL }/buildings`, {
+        //             // params: {
+        //             //     page: store.page,
+        //             // },
+        //         })
+        //         .then((res) => {
+        //             console.log(
+        //                 res,
+        //                 // res.data.results.last_page
+        //             );
+                    
+        //             store.buildings = res.data.buildings;
+        //             // this.currentPage = res.data.results.current_page;
+        //             // this.lastPage = res.data.results.last_page;
+        //         });
+        // },
     },
     created() {
         // this.fetchBuildings();
         this.getApiBuildings();
-    },
+        
+    }
 };
 </script>
 
@@ -205,25 +224,14 @@ export default {
 
                 </div>
 
-                <div class="services-container">
-                    <label class="label" for="servicesFilter">Servizi</label>
-                    
-                    <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample5">
-                        <i class="fa-solid fa-bell-concierge"></i>
-                    </span>
-
-                    <div class="collapse" id="collapseExample4">
-                        <select class="form-select form-select-sm" id="servicesFilter" v-model="store.servicesFilter">
-                            <option
-                            v-for="service in store.services"
-                            :value="service.id"
-                            :key="service.id"
-                            >
-                            {{ service.name }}
-                            </option>
-                        </select>
+                <div>
+                    <label>Servizi:</label>
+                    <div class="services">
+                        <div class="services" v-for="service in servicesOptions" :key="service.value">
+                            <input type="checkbox" :id="service.value" v-model="selectedServices" :value="service" />
+                            <label :for="service.value">{{ service.label }}</label>
+                        </div>
                     </div>
-
                 </div>
             </div>
 
@@ -356,5 +364,12 @@ select {
 }
 .button:hover {
     color: #D1BE68;
+}
+
+.services {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 </style>
