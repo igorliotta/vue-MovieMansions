@@ -280,7 +280,7 @@ export default {
   }
 
   .btn {
-    --bs-btn-font-size: 10px;
+    --bs-btn-font-size: 11px;
     --bs-btn-padding-x: 3px;
     --bs-btn-padding-y: 2px;
   }
