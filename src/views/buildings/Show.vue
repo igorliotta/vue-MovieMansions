@@ -34,12 +34,81 @@ export default {
 
 <template>
     <div v-if="building" class="container-fluid">
-        <h1>{{ building.title }}</h1>
+        <div class="col-12">
+            <h1 class="title">{{ building.title }}</h1>
+            <div class="wrap-images">
+                <img class="thumb" :src="'http://127.0.0.1:8000/storage' + building.image">
+                <div class="pic">
+                    <img  v-for="image in building.images" class="preview" :src="'http://127.0.0.1:8000/storage' + image.url">
+                </div>
+            </div>
+            
+            <p>{{ building.description }}</p>
+            <div class="tags" v-if="building.services" >
+                <p v-for="service in building.services" >{{ service.name }}</p>
+            </div>
+        </div>
+        
     </div>
     
 
 </template>
 
-<style>
+<style lang="scss" scoped>
+    .col-12 {
+    display: flex; 
+    flex-direction: column;
+    gap: 12px; 
+
+    .title {
+        text-align: center;
+    }
+}
+    .wrap-images{
+        display: flex; 
+        justify-content: space-around; 
+        align-items: center;
+    }
+    
+    .thumb {
+        width: 600px;
+        transition: width ease-out 0.2s; 
+    }
+    .thumb:hover {
+        width: 800px; 
+    }
+    .preview {
+        width: 200px; 
+    }
+
+    .pic {
+        display: flex; 
+        flex-direction: column; 
+        gap: 20px; 
+    }
+    .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3px; 
+        p {
+            border-radius : 10px; 
+            padding: 2px 8px ; 
+            border: 2px solid; 
+        }
+        p:hover{
+        border: 2px solid #5B8D81;
+    }
+    }
+
+
+    .row {
+        justify-content: center; 
+    }
+
+    .section {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    }
 
 </style>
