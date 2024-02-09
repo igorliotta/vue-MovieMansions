@@ -46,26 +46,28 @@ export default {
     },
     methods: {
         getCoordinatesFromAddress() {
-            axios.get(`https://api.tomtom.com/search/2/search/${store.address}.json`, {
-                params: {
-                    'key': 'pqHD68XXAijUehCtM4HFFAVamZjQMA1W',
-                }
+        axios
+            .get(`https://api.tomtom.com/search/2/search/${store.address}.json`, {
+            params: {
+                key: "pqHD68XXAijUehCtM4HFFAVamZjQMA1W",
+            },
             })
-                .then(response => {
-                    console.log(response);
-                    const firstResult = response.data.results[0];
-                    if (firstResult) {
-
-                        store.lat = firstResult.position.lat;
-                        store.lon = firstResult.position.lon;
-                        this.getApiBuildings();
-                    } else {
-                        console.error('Nessun risultato valido ottenuto dalla ricerca di coordinate');
-                    }
-                })
-                .catch(error => {
-                    console.error('Errore nella richiesta di coordinate:', error);
-                });
+            .then((response) => {
+            console.log(response);
+            const firstResult = response.data.results[0];
+            if (firstResult) {
+                store.lat = firstResult.position.lat;
+                store.lon = firstResult.position.lon;
+                this.getApiBuildings();
+            } else {
+                console.error(
+                "Nessun risultato valido ottenuto dalla ricerca di coordinate"
+                );
+            }
+            })
+            .catch((error) => {
+            console.error("Errore nella richiesta di coordinate:", error);
+            });
         },
         getApiBuildings() {
             axios
@@ -129,110 +131,251 @@ export default {
 </script>
 
 <template>
-    <div class="section">
-        <div class="container">
-            <div>
-                <label for="address">Inserisci l'indirizzo:</label>
+    <div class="">
+        <div class="searchbar">
+
+            <div class="address-container col-12">
+                <label class="address" for="address">Inserisci un paese, una regione o una città</label>
                 <input type="text" id="address" v-model="store.address" />
-                <label for="radius">Seleziona il raggio:</label>
-                <select v-model="store.radius">
-                    <option value="50000">50 km</option>
-                    <option value="100000">100 km</option>
-                    <option value="150000">150 km</option>
-                </select>
+            </div>
 
-                <label for="roomsFilter">Numero stanze:</label>
-                <select id="roomsFilter" v-model="store.roomsFilter">
-                    <option v-for="option in this.roomsOptions" :value="option.value" :key="option.value">{{ option.label }}
-                    </option>
-                </select>
+            <span class="filter">
+                Filtra per: 
+            </span >
 
-                <label for="bedsFilter">Seleziona il numero di letti:</label>
-                <select id="bedsFilter" v-model="store.bedsFilter">
-                    <option v-for="option in this.bedsOptions" :value="option.value" :key="option.value">{{ option.label }}
-                    </option>
-                </select>
+            <div class="col-10 filters">
 
-                <label for="bathsFilter">Numero bagni:</label>
-                <!-- <input type="number" id="bathrooms" v-model="store.bathrooms" /> -->
-                <select id="bathsFilter" v-model="store.bathsFilter">
-                    <option v-for="option in this.bathsOptions" :value="option.value" :key="option.value">{{ option.label }}
-                    </option>
-                </select>
+                <div class="ray-container">
+                <label class="label" for="radius">Raggio</label>
 
-                <!-- <label for="servicesFilter">Servizi:</label>
-                <input type="number" id="bathrooms" v-model="store.bathrooms" />
-                <select id="servicesFilter" v-model="store.servicesFilter">
-                    <option v-for="service in this.store.services" :value="service.id" :key="service.id">{{ service.name }}
-                    </option>
-                </select> -->
+                <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <i class="fa-solid fa-compass"></i>
+                </span>
 
-                <div>
-                    <label>Servizi:</label>
-                    <div class="services">
-                        <div class="services" v-for="service in servicesOptions" :key="service.value">
-                            <input type="checkbox" :id="service.value" v-model="selectedServices" :value="service" />
-                            <label :for="service.value">{{ service.label }}</label>
-                        </div>
+                <div class="collapse" id="collapseExample">
+                    <select class="form-select form-select-sm" v-model="store.radius">
+                        <option value="50000">50 km</option>
+                        <option value="100000">100 km</option>
+                        <option value="150000">150 km</option>
+                    </select>
+                </div>
+
+                </div>
+
+                <div class="rooms-container">
+                    <label class="label" for="roomsFilter">Stanze</label>
+
+                    <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                        <i class="fa-solid fa-person-shelter"></i>
+                    </span>
+
+                    <div class="collapse" id="collapseExample1">
+                        <select class="form-select form-select-sm" id="roomsFilter" v-model="store.roomsFilter">
+                            <option 
+                            v-for="option in this.roomsOptions"
+                            :value="option.value"
+                            :key="option.value"
+                            >
+                            {{ option.label }}
+                            
+                            </option>
+                        </select>
                     </div>
                 </div>
 
+                <div class="beds-container">
+                    <label class="label" for="bedsFilter">Letti</label>
 
-                <button @click="getCoordinatesFromAddress">Cerca Edifici</button>
+                    <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                        <i class="fa-solid fa-bed"></i>
+                    </span> 
+
+                    <div class="collapse" id="collapseExample2">
+                        <select class="form-select form-select-sm" id="bedsFilter" v-model="store.bedsFilter">
+                            <option
+                            v-for="option in this.bedsOptions"
+                            :value="option.value"
+                            :key="option.value"
+                            >
+                            {{ option.label }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="baths-container">
+                    <label class="label" for="bathsFilter">Bagni</label>
+                    
+                    <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
+                        <i class="fa-solid fa-shower"></i>
+                    </span>
+
+                    <div class="collapse" id="collapseExample3"> 
+                        <select class="form-select form-select-sm" id="bathsFilter" v-model="store.bathsFilter">
+                            <option
+                            v-for="option in this.bathsOptions"
+                            :value="option.value"
+                            :key="option.value"
+                            >
+                            {{ option.label }}
+                            </option>
+                    </select>
+                    </div>
+
+                </div>
             </div>
-            <div v-if="store.buildings.length > 0" class="row cards">
-                <BuildingCard class="card_" v-for="building in store.buildings" :building="building" :key="building.id" />
-            </div>
-            <div class="loading" v-else>
-                <p>Non ci sono risultati</p>
+            <div class="wrap-b">
+                <button class="button" @click="getCoordinatesFromAddress">Cerca Edifici</button>
+            </div> 
+            <div class="col-12 serv">
+                <div class="services container">
+                    <div class="services form-check" v-for="service in servicesOptions" :key="service.value">
+                        <input type="checkbox" class="btn-check" name="options-outlined" :id="service.value" v-model="selectedServices" :value="service" />
+                        <label class="btn btn-outline-success label-c"  :for="service.value">{{ service.label }}</label>
+                    </div>
+                </div>
+            </div>          
+        </div>
+            <div class="section">
+                <div class="container">
+                    <div v-if="store.buildings.length > 0" class="row cards">
+                        <BuildingCard
+                            class="card_"
+                            v-for="building in store.buildings"
+                            :building="building"
+                            :key="building.id"
+                        />
+                    </div>
+                    <div class="loading" v-else>
+                    <p>Non ci sono risultati</p>
+                </div>
             </div>
         </div>
     </div>
 </template>
-<style lang="scss">
+
+<style lang="scss" scoped>
 .section {
-    padding: 30px;
-    margin-top: 50px;
+  padding: 30px;
+  margin-top: 100px;
 }
 
+.searchbar {
+  position: fixed;
+  z-index: 3;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 15px;
+  row-gap: 5px; 
+  display: flex; 
+  flex-wrap: wrap;
+  width: 95%; 
+  margin: 0 auto; 
+  justify-content: center;
+  align-items: center;
 
+  .label {
+    font-size: 12px; 
+    margin-right: 10px; 
 
+  }
+
+  .btn {
+    --bs-btn-font-size: 11px;
+    --bs-btn-padding-x: 3px;
+    --bs-btn-padding-y: 2px;
+  }
+
+  .address {
+    margin-right: 20px; 
+  }
+
+  .src-icon {
+    color:  #5B8E81;
+  }
+
+  .src-icon:hover {
+    color:#D1BE68;
+  }
+}
+.filters{
+    display: flex;
+    justify-content: space-around;
+
+  }
 .active {
-    color: #3b7ed6;
-    font-weight: bold;
+  color: #3b7ed6;
+  font-weight: bold;
 }
-
+.serv {
+    margin-top: 5px; 
+   
+}
+ 
 .cards {
-    padding: 10px 20px;
-    row-gap: 15px;
+  padding: 10px 20px;
+  row-gap: 15px;
 }
 
 .card_:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .loading {
-    padding: 50px;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    justify-content: center;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: 30px;
+  }
+
+  img {
+    height: 200px;
+  }
+}
+
+.address-container {
+    display: flex; 
+    input {
+        flex-grow: 1; 
+    }
+}
+
+select {
+    font-size: 10px; 
+}
+
+.wrap-b {
+    display: flex; 
     align-items: center;
+    justify-content: center;
+}
 
-    p {
-        font-size: 30px;
-    }
+.filter {
+    color: #5B8E81;
+    font-weight: 400;
+}
 
-    img {
-        height: 200px;
-    }
-
+.button {
+    background-color: #5B8E81;
+    color: white; 
+    padding: 2px 10px; 
+    border-radius: 10px; 
+    border: none; 
+}
+.button:hover {
+    color: #D1BE68;
 }
 
 .services {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    font-size: 10px; 
+    gap: 5px;
 }
 </style>

@@ -10,7 +10,7 @@ export default {
 
 <template>
     <Appheader class="z-ind"/>
-    <router-view class="main" v-slot="{ Component }">
+    <router-view class="main-c" v-slot="{ Component }">
         <transition name="slide">
           <component :is="Component" />
         </transition>

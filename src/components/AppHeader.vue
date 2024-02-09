@@ -14,7 +14,7 @@ export default {
 <template>
 
     <header>
-        <div class="container-fluid navbar">
+        <div class="container-fluid navbar-c">
             <ul class="links">
                 <li>
                     <img class="logo" src="../assets/logo.png">
@@ -38,7 +38,7 @@ export default {
 
 <style lang="scss">
 
-.navbar {
+.navbar-c {
     display: flex; 
     justify-content: space-between;
     align-items: center; 
@@ -74,7 +74,7 @@ export default {
     }
 }
 
-.navbar:hover {
+.navbar-c:hover {
     height: 60px;
     font-size: 18px;
 }
