@@ -32,7 +32,7 @@ export default {
             <div class="row-pic">
                 <img v-for="image in building.images" class="preview" :src="'http://127.0.0.1:8000/storage' + image.url">
             </div>
-            <p class="link">
+            <p class="btn-custom">
                 <router-link :to="{ name: 'buildings.show', params: { slug: building.slug } }">Dettagli</router-link>
             </p>
         </div>
@@ -77,18 +77,6 @@ export default {
 
     .preview {
         width: 50px;
-    }
-
-    .link {
-        text-align: center;
-        margin-top: auto;
-        font-size: 18px;
-        font-weight: 700;
-        color: whitesmoke;
-        background-color: #5B8E81;
-        border-radius: 10px;
-        padding: 2px 8px;
-        width: 60%;
     }
 
     .address {

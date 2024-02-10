@@ -41,3 +41,20 @@ body {
     max-width: 1000px;
     margin: 0 auto;
 }
+
+.btn-custom {
+    text-align: center;
+    margin-top: auto;
+    font-size: 18px;
+    font-weight: 700;
+    color: whitesmoke;
+    background-color: #5B8E81;
+    border-radius: 10px;
+    padding: 2px 8px;
+    width: 60%;
+}
+
+.src-icon {
+    color:  #5B8E81;
+    cursor: pointer; 
+  }

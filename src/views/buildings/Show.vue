@@ -7,25 +7,65 @@ export default {
         return {
             building: null,
             store: store,
+            guestName : "", 
+            guestSurname : "", 
+            guestEmail: "",
+            guestMessage: "",
+            confirm : null,
+            showForm : false,
+
         };
     },
-  methods: {
-    fetchProject() {
-        axios.get(`${store.BASE_URL}/buildings/${this.$route.params.slug}`)
-            .then((res) => {
-           //console.log(res.data)
-                this.building = res.data.building;
-                console.log(this.building)
+    methods: {
+        fetchProject() {
+            axios.get(`${store.BASE_URL}/buildings/${this.$route.params.slug}`)
+                .then((res) => {
+            //console.log(res.data)
+                    this.building = res.data.building;
+                    console.log(this.building)
             })
-            .catch((error) => {
-                console.log("building not found", error.response);
+                .catch((error) => {
+                    console.log("building not found", error.response);
 
-                if (error.response.status === 404) {
-                    this.$router.push({ name: "not-found" });
-                }
+                    if (error.response.status === 404) {
+                        this.$router.push({ name: "not-found" });
+                    }
             });
         },
-  },
+        sendMessage(){
+
+            //la chiamata axios viene fatta non in get, ma in post
+
+            axios.post(`${store.BASE_URL}/messages`, {
+                //come secondo parametro passiamo un oggetto composto riempiendo i campi dei messaggi nel backend
+                'building_id' : this.building.id,
+                'name': this.guestName, 
+                'surname': this.guestName, 
+                'guest_email' : this.guestEmail,
+                'text' : this.guestMessage
+                })
+                .then(response => {
+                // gestiamo la response che arriva dall'Api/MessageController
+                console.log(response.data);
+                this.confirm = response.data.response;
+                })
+                .catch(error => {
+                // Gestire gli errori se necessario
+                console.error(error);
+            });
+        },
+        closeConfirm(){
+            this.confirm = null; 
+        },
+        toggleForm(){
+            if(this.showForm === false){
+                this.showForm = true
+            } else {
+                this.showForm = false
+            }
+            
+        }
+    },
   created() {
     this.fetchProject()
   }
@@ -48,7 +88,32 @@ export default {
                 <p v-for="service in building.services" >{{ service.name }}</p>
             </div>
         </div>
-        
+        <div class="alert-custom" v-if="confirm !== null" :class="confirm === null? 'd-none': '' ">
+                <p class="mb-0">{{ confirm }}</p>
+                <span @click="closeConfirm()" class="src-icon ">
+                    Chiudi
+                    <i class="fa-solid fa-rectangle-xmark"></i>
+                </span>
+            </div>
+            <div class="form-wrap">
+                <div class="form-head">
+                    <p class="text-center mb-0">Vuoi saperne di più o prenotare? Contatta l'host!</p>
+                    <span @click="toggleForm()" class="src-icon">
+                        <i class="fa-solid fa-pen"></i>
+                    </span>
+                </div>
+                
+                <form class="form-custom" :class="showForm ===false? 'd-none' : ''">
+                    <input v-model="guestName" type="text" placeholder="Inserisci il tuo nome" required> 
+                    <input v-model="guestSurname" type="text" placeholder="Inserisci il tuo cognome" required>
+                    <input v-model="guestEmail" type="email" placeholder="Inserisci una email valida" required>
+                    <textarea v-model="guestMessage" placeholder="Scrivi il tuo messaggio" required></textarea>
+                    <div class="btn-wrap">
+                        <span class="btn-custom" @click="sendMessage()">Invia messaggio</span>
+                    </div>
+                    
+                </form>
+            </div>
     </div>
     
 
@@ -59,6 +124,7 @@ export default {
     display: flex; 
     flex-direction: column;
     gap: 12px; 
+    margin-bottom: 70px; 
 
     .title {
         text-align: center;
@@ -101,14 +167,49 @@ export default {
     }
     }
 
+    .form-wrap {
+        max-width: 800px; 
+        margin: 0 auto; 
+        position: fixed; 
+        bottom: 0; 
+        left: 30%; 
+        right: 30%;
+        background-color: rgba(255, 255, 255, 0.95);
+        z-index: 3; 
+        padding: 15px; 
+        border: 3px solid #5b8d813b;
 
-    .row {
-        justify-content: center; 
+        .form-head {
+            display: flex; 
+            justify-content: space-around;
+            align-items: center;
+            padding: 5px; 
+        }
+    }
+    .form-custom {
+        display: flex; 
+        flex-direction: column; 
+        gap: 5px; 
+        margin-bottom: 20px; 
+
+        .btn-wrap {
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+        }
     }
 
-    .section {
-    margin-bottom: 20px;
-    margin-top: 20px;
+    .alert-custom {
+        display: flex; 
+        background-color: #5b8d813b;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px; 
+
+        .src-icon {
+            font-size: 10px; 
+        }
+
     }
 
 </style>
