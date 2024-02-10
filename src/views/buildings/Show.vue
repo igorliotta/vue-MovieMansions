@@ -40,7 +40,7 @@ export default {
                 //come secondo parametro passiamo un oggetto composto riempiendo i campi dei messaggi nel backend
                 'building_id' : this.building.id,
                 'name': this.guestName, 
-                'surname': this.guestName, 
+                'surname': this.guestSurname, 
                 'guest_email' : this.guestEmail,
                 'text' : this.guestMessage
                 })
@@ -53,6 +53,9 @@ export default {
                 // Gestire gli errori se necessario
                 console.error(error);
             });
+
+            this.showform = false
+            this.toggleForm()
         },
         closeConfirm(){
             this.confirm = null; 
@@ -77,9 +80,9 @@ export default {
         <div class="col-12">
             <h1 class="title">{{ building.title }}</h1>
             <div class="wrap-images">
-                <img class="thumb" :src="'http://127.0.0.1:8000/storage' + building.image">
+                <img class="thumb" :src="'http://127.0.0.1:8000/storage/' + building.image">
                 <div class="pic">
-                    <img  v-for="image in building.images" class="preview" :src="'http://127.0.0.1:8000/storage' + image.url">
+                    <img  v-for="image in building.images" class="preview" :src="'http://127.0.0.1:8000/storage/' + image.url">
                 </div>
             </div>
             
@@ -88,14 +91,15 @@ export default {
                 <p v-for="service in building.services" >{{ service.name }}</p>
             </div>
         </div>
-        <div class="alert-custom" v-if="confirm !== null" :class="confirm === null? 'd-none': '' ">
-                <p class="mb-0">{{ confirm }}</p>
-                <span @click="closeConfirm()" class="src-icon ">
-                    Chiudi
-                    <i class="fa-solid fa-rectangle-xmark"></i>
-                </span>
-            </div>
+        
             <div class="form-wrap">
+                <div class="alert-custom" v-if="confirm !== null" :class="confirm === null? 'd-none': '' ">
+                    <p class="mb-0">{{ confirm }}</p>
+                    <span @click="closeConfirm()" class="src-icon ">
+                        Chiudi
+                        <i class="fa-solid fa-rectangle-xmark"></i>
+                    </span>
+                </div>
                 <div class="form-head">
                     <p class="text-center mb-0">Vuoi saperne di più o prenotare? Contatta l'host!</p>
                     <span @click="toggleForm()" class="src-icon">

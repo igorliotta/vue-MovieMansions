@@ -28,9 +28,9 @@ export default {
         <div class="card">
             <h4>{{ building.title }}</h4>
             <p class="address">{{ building.address }}</p>
-            <img v-if="building.image" class="thumb" :src="'http://127.0.0.1:8000/storage' + building.image">
+            <img v-if="building.image" class="thumb" :src="'http://127.0.0.1:8000/storage/' + building.image">
             <div class="row-pic">
-                <img v-for="image in building.images" class="preview" :src="'http://127.0.0.1:8000/storage' + image.url">
+                <img v-for="image in building.images" class="preview" :src="'http://127.0.0.1:8000/storage/' + image.url">
             </div>
             <p class="btn-custom">
                 <router-link :to="{ name: 'buildings.show', params: { slug: building.slug } }">Dettagli</router-link>
