@@ -86,16 +86,22 @@ export default {
         <div class="col-12">
             <h1 class="title">{{ building.title }}</h1>
             <div class="wrap-images">
-                <img class="thumb" 
+                <div class="text-thumb">
+                    <p>Passa sull'immagine per ingrandirla</p>
+                    <img class="thumb" 
                     :src="'http://127.0.0.1:8000/storage/' + building.image"
                     :class=" currentPreview === 10 ? 'active-now' : 'd-none'"
                 >
-                <img  v-for="(image,index) in building.images" class="thumb" 
-                    :src="'http://127.0.0.1:8000/storage/' + image.url" 
-                    :key="index"
-                    :class=" currentPreview === index ? 'active-now' : 'd-none'"
-                >
-                <div class="images-preview ">
+                    <img  v-for="(image,index) in building.images" class="thumb" 
+                        :src="'http://127.0.0.1:8000/storage/' + image.url" 
+                        :key="index"
+                        :class=" currentPreview === index ? 'active-now' : 'd-none'"
+                    >
+                </div>
+                
+                <div class="preview-wrap">
+                    <p>Clicca sull'immagine per visualizzarla a sinistra</p>
+                    <div class="images-preview ">
                     <img class="preview"  
                         :class=" currentPreview === 10 ? 'active-now' : '' " 
                         :src="'http://127.0.0.1:8000/storage/' + building.image" 
@@ -109,12 +115,17 @@ export default {
                         @click="activePreview(index)"
                     >
                 </div>
+                </div>
+                
             </div>
             
-            <p>{{ building.description }}</p>
-            <div class="tags" v-if="building.services" >
-                <p v-for="service in building.services" >{{ service.name }}</p>
+            <div class="container">
+                <p class="description">{{ building.description }}</p>
+                <div class="tags" v-if="building.services" >
+                    <p v-for="service in building.services" >{{ service.name }}</p>
+                </div>
             </div>
+            
         </div>
         
             <div class="form-wrap">
@@ -161,26 +172,70 @@ export default {
 }
     .wrap-images{
         display: flex; 
-        justify-content: space-around; 
+        justify-content: center; 
         align-items: center;
+        margin-bottom: 40px; 
+        gap: 30px; 
+        margin-right: -20px; 
     }
     
     .thumb {
         width: 600px;
         display: none; 
+        height: 300px; 
+        object-fit: cover;
         transition: width ease-out 0.2s; 
     }
     .thumb:hover {
         width: 800px; 
+        height: 400px; 
+    }
+    
+    .text-thumb {
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        p {
+            margin: 0; 
+            font-size: 12px;
+        }
+    }
+    .text-thumb:hover{
+
+        p {
+            display: none; 
+        }
     }
     .preview {
-        width: 200px; 
+        max-width: 140px; 
+        cursor: pointer;  
     }
 
     .images-preview {
         display: flex; 
         flex-direction: column; 
-        gap: 20px; 
+        max-height: 400px;
+        gap: 10px; 
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .preview-wrap {
+        width: 25%; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center;
+
+        p {
+            text-align: center; 
+            font-size: 12px; 
+            margin-bottom: 2px; 
+        }
+    }
+
+    .description {
+        text-align: center;
     }
     .tags {
     display: flex;
@@ -199,7 +254,7 @@ export default {
 
     .active-now {
         display: inline-block;
-        border: 3px solid #D3BF6A; 
+        border: 5px solid #5B8D81; 
     }
 
     .form-wrap {
