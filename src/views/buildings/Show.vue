@@ -13,6 +13,8 @@ export default {
             guestMessage: "",
             confirm : null,
             showForm : false,
+            currentPreview: 10,
+
 
         };
     },
@@ -67,6 +69,10 @@ export default {
                 this.showForm = false
             }
             
+        },
+        activePreview(ind){
+            this.currentPreview = ind
+            console.log(this.currentPreview)
         }
     },
   created() {
@@ -80,9 +86,28 @@ export default {
         <div class="col-12">
             <h1 class="title">{{ building.title }}</h1>
             <div class="wrap-images">
-                <img class="thumb" :src="'http://127.0.0.1:8000/storage/' + building.image">
-                <div class="pic">
-                    <img  v-for="image in building.images" class="preview" :src="'http://127.0.0.1:8000/storage/' + image.url">
+                <img class="thumb" 
+                    :src="'http://127.0.0.1:8000/storage/' + building.image"
+                    :class=" currentPreview === 10 ? 'active-now' : 'd-none'"
+                >
+                <img  v-for="(image,index) in building.images" class="thumb" 
+                    :src="'http://127.0.0.1:8000/storage/' + image.url" 
+                    :key="index"
+                    :class=" currentPreview === index ? 'active-now' : 'd-none'"
+                >
+                <div class="images-preview ">
+                    <img class="preview"  
+                        :class=" currentPreview === 10 ? 'active-now' : '' " 
+                        :src="'http://127.0.0.1:8000/storage/' + building.image" 
+                        @click="activePreview(10)"
+                    >
+                    <img v-for="(image,index) in building.images" 
+                        class="preview"  
+                        :class=" currentPreview ===  index? 'active-now' : ''" 
+                        :src="'http://127.0.0.1:8000/storage/' + image.url" 
+                        :key="index" 
+                        @click="activePreview(index)"
+                    >
                 </div>
             </div>
             
@@ -142,6 +167,7 @@ export default {
     
     .thumb {
         width: 600px;
+        display: none; 
         transition: width ease-out 0.2s; 
     }
     .thumb:hover {
@@ -151,7 +177,7 @@ export default {
         width: 200px; 
     }
 
-    .pic {
+    .images-preview {
         display: flex; 
         flex-direction: column; 
         gap: 20px; 
@@ -169,6 +195,11 @@ export default {
         p:hover{
         border: 2px solid #5B8D81;
     }
+    }
+
+    .active-now {
+        display: inline-block;
+        border: 3px solid #D3BF6A; 
     }
 
     .form-wrap {
