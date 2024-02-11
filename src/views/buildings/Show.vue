@@ -137,7 +137,7 @@ export default {
                     </span>
                 </div>
                 <div class="form-head">
-                    <p class="text-center mb-0">Vuoi saperne di più o prenotare? Contatta l'host!</p>
+                    <p class="text-center mb-0">Vuoi saperne di più o prenotare? <span class="text-green">Contatta l'host!</span></p>
                     <span @click="toggleForm()" class="src-icon">
                         <i class="fa-solid fa-pen"></i>
                     </span>
@@ -173,7 +173,6 @@ export default {
     .wrap-images{
         display: flex; 
         justify-content: center; 
-        align-items: center;
         margin-bottom: 40px; 
         gap: 30px; 
         margin-right: -20px; 
@@ -187,8 +186,9 @@ export default {
         transition: width ease-out 0.2s; 
     }
     .thumb:hover {
-        width: 800px; 
-        height: 400px; 
+        width: 700px; 
+        height: 500px; 
+        margin-top: -25px; 
     }
     
     .text-thumb {
@@ -274,6 +274,10 @@ export default {
             justify-content: space-around;
             align-items: center;
             padding: 5px; 
+
+            p {
+                font-weight: 500;
+            }
         }
     }
     .form-custom {
