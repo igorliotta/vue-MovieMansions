@@ -183,7 +183,6 @@ export default {
         display: none; 
         height: 300px; 
         object-fit: cover;
-        opacity: 0; 
         transition: width ease-out 0.2s;
     }
     .thumb:hover {
