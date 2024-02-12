@@ -137,8 +137,8 @@ export default {
                     </span>
                 </div>
                 <div class="form-head">
-                    <p class="text-center mb-0">Vuoi saperne di più o prenotare? <span class="text-green">Contatta l'host!</span></p>
-                    <span @click="toggleForm()" class="src-icon">
+                    <p class=" txt-form text-center mb-0">Vuoi saperne di più o prenotare? <span class="text-green">Contatta l'host!</span></p>
+                    <span @click="toggleForm()" class="src-icon btn-pen">
                         <i class="fa-solid fa-pen"></i>
                     </span>
                 </div>
@@ -305,5 +305,61 @@ export default {
         }
 
     }
+
+    /* Stili per desktop (e dispositivi più grandi) */
+@media (min-width: 1200px) {
+}
+
+@media (max-width: 992px) {
+    /* Stili per desktop large */
+
+    .wrap-images {
+        flex-direction: column; 
+    }
+
+    .thumb {
+        width: 500px;
+        height: 250px; 
+    }
+    .thumb:hover {
+        width: 600px; 
+        height: 300px; 
+    }
+
+    .images-preview {
+        flex-direction: row; 
+    }
+
+    .preview-wrap {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Stili per tablet orizzontale e desktop medium */
+}
+
+/* Stili per tablet verticale */
+@media (max-width: 576px) {
+
+    .txt-form {
+        display: none; 
+    }
+
+    .form-wrap {
+        left: 10%; 
+        right: 10%;
+        padding: 0; 
+        height: 20px; 
+
+        .btn-pen {
+            margin-top: -10px; 
+        }
+    }
+}
+
+/* Stili per smartphone e dispositivi più piccoli */
+@media (max-width: 575px) {
+}
 
 </style>
