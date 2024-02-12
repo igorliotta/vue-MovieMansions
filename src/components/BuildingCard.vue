@@ -26,7 +26,7 @@ export default {
 <template>
     <div class="col-lg-3 col-md-3 col-sm-2">
         <div class="card">
-            <img v-if="building.image" class="card-img-top" :src="'http://127.0.0.1:8000/storage' + building.image">
+            <img v-if="building.image" class="card-img-top" :src="'http://127.0.0.1:8000/storage/' + building.image">
             <div class="card-body">
                 <h5>
                     <router-link :to="{ name: 'buildings.show', params: { slug: building.slug } }">{{ building.title
