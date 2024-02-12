@@ -286,6 +286,11 @@ export default {
         gap: 5px; 
         margin-bottom: 20px; 
 
+        input,
+        textarea {
+            padding-left: 8px;
+        }
+
         .btn-wrap {
             display: flex; 
             justify-content: center;
@@ -337,6 +342,19 @@ export default {
 
 @media (max-width: 768px) {
     /* Stili per tablet orizzontale e desktop medium */
+    .thumb {
+        width: 400px;
+        height: 250px; 
+    }
+    .thumb:hover {
+        width: 500px; 
+        height: 280px; 
+    }
+
+    .form-wrap {
+        left: 20%; 
+        right: 20%; 
+    }
 }
 
 /* Stili per tablet verticale */
@@ -349,17 +367,31 @@ export default {
     .form-wrap {
         left: 10%; 
         right: 10%;
-        // padding: 0; 
-        height: 20px; 
+        padding: 0; 
+        // height: 20px; 
 
-        .btn-pen {
-            // margin-top: -10px; 
-        }
+    }
+
+    .description {
+        font-size: 12px; 
+    }
+
+    .tags {
+        font-size: 10px; 
     }
 }
 
 /* Stili per smartphone e dispositivi più piccoli */
 @media (max-width: 575px) {
+
+    .thumb {
+        width: 300px;
+        height: 250px; 
+    }
+    .thumb:hover {
+        width: 360px; 
+        height: 290px; 
+    }
 }
 
 </style>
