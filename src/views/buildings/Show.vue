@@ -349,11 +349,11 @@ export default {
     .form-wrap {
         left: 10%; 
         right: 10%;
-        padding: 0; 
+        // padding: 0; 
         height: 20px; 
 
         .btn-pen {
-            margin-top: -10px; 
+            // margin-top: -10px; 
         }
     }
 }
