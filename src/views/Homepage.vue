@@ -60,12 +60,14 @@ export default {
     background-image: url(../assets/home_bg.jpeg);
     background-size: cover;
     background-position: bottom;
+    position: relative; 
 }
 
 .text-wrap {
     display: flex; 
     justify-content: space-between; 
     padding: 30px 30px 10px 30px; 
+    gap: 80px; 
 
     .description {
         max-width: 200px; 
@@ -80,8 +82,6 @@ export default {
         font-size: 35px; 
         font-weight: 700;
         background-size: cover;
-        transform: rotate(0);
-        transition: transform 0.5s;
 
         .t-green {
             color:  #5A8D80; 
@@ -94,9 +94,6 @@ export default {
         }
     }
 
-    .title:hover {
-        transform: rotate(360deg);
-    }
 }
 
 .action {
@@ -105,6 +102,10 @@ export default {
     justify-content: center; 
     align-items: center;
     color: white; 
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     .wrap {
         background-color: rgba($color: #06323B , $alpha: 0.7);
@@ -119,6 +120,88 @@ export default {
     p {
         font-size: 18px; 
     }
+}
+
+
+/* Stili per desktop (e dispositivi più grandi) */
+@media (min-width: 1200px) {
+    /* Stili per desktop extra-large */
+    .text-wrap{
+
+        .title{
+        font-size: 45px; 
+        }
+
+        .description {
+            font-size: 25px; 
+        }
+    }
+
+    .action {
+        margin-top: 10px; 
+        .wrap {
+            font-size: 18px; 
+
+            p {
+                font-size: 20px;
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    /* Stili per desktop large */
+    .action {
+        margin-top: 20px; 
+    }
+
+    .text-wrap{
+
+.title{
+font-size: 28px; 
+}
+
+.description {
+    font-size: 16px; 
+}
+}
+}
+
+@media (max-width: 768px) {
+    /* Stili per tablet orizzontale e desktop medium */
+    .action {
+        margin-top: 20px; 
+    }
+}
+
+/* Stili per tablet verticale */
+@media (max-width: 576px) {
+    /* Stili per dispositivi più grandi di smartphone, come tablet in modalità verticale */
+    .text-wrap{
+        padding: 60px 10px 30px 10px; 
+        gap: 60px; 
+
+        .title{
+        font-size: 25px; 
+        align-items: flex-start; 
+        }
+
+        .description {
+            font-size: 14px; 
+            text-align: right; 
+        }
+    }
+
+    .action {
+        margin-top: 60px; 
+    }
+
+    
+}
+
+/* Stili per smartphone e dispositivi più piccoli */
+@media (max-width: 575px) {
+    
 }
 
 </style>
