@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,7 +8,7 @@ ul,
 ol,
 menu {
     list-style: none;
-    margin: 0; 
+    margin: 0;
 }
 
 a {
@@ -19,7 +19,7 @@ a {
 body {
     font-family: 'Quicksand', sans-serif;
     height: 100vh;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 #app {
@@ -27,15 +27,15 @@ body {
 }
 
 .main-c {
-    padding: 50px 20px 0px 20px; 
+    padding: 50px 20px 0px 20px;
     height: 100vh;
-    overflow: auto; 
-  }
-  
+    overflow: auto;
+}
+
 .z-ind {
     position: sticky;
-    z-index: 100; 
-  }
+    z-index: 100;
+}
 
 .container-c {
     max-width: 1000px;
@@ -52,15 +52,34 @@ body {
     border-radius: 10px;
     padding: 2px 8px;
     width: 60%;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 .src-icon {
-    color:  #5B8E81;
-    cursor: pointer; 
-  }
+    color: #5B8E81;
+    cursor: pointer;
+}
 
-  .text-green {
+.text-green {
     color: #5B8E81
-  }
+}
 
+//larghezza della barra di scorrimento
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+//colore background barra di scorrimento
+::-webkit-scrollbar-track {
+    background-color: #5A8D81;
+    border-radius: 6px;
+}
+
+//pulsante barra di scorrimento on hover
+::-webkit-scrollbar-thumb {
+    background-color: #D4C06B;
+    border-radius: 6px;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    transition: background-color 0.3s;
+}

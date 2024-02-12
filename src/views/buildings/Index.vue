@@ -491,24 +491,4 @@ select {
 .button:hover {
     color: #D1BE68;
 }
-
-//larghezza della barra di scorrimento
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-//colore background barra di scorrimento
-::-webkit-scrollbar-track {
-    background-color: #5A8D81;
-    border-radius: 6px;
-}
-
-//pulsante barra di scorrimento on hover
-::-webkit-scrollbar-thumb {
-    background-color: #D4C06B;
-    border-radius: 6px;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    transition: background-color 0.3s;
-}
 </style>
