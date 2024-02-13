@@ -121,15 +121,15 @@ export default {
         return value < 10 ? `0${value}` : value;
         },
     },
-  created() {
-    this.fetchBuilding();
-    this.getCurrentTime();
-  },
-  updated() {
-    this.getIpAddress(); 
-    //al montaggio della pagina NON abbiamo il building.id perchè ci arriva dal server
-    //bisogna aspettare che arrivi con Axios. per questo lo metto in updated!
-  },
+    created() {
+        this.fetchBuilding();
+        this.getCurrentTime();
+    },
+    updated() {
+        this.getIpAddress(); 
+        //al montaggio della pagina NON abbiamo il building.id perchè ci arriva dal server
+        //bisogna aspettare che arrivi con Axios. per questo lo metto in updated!
+    },
 };
 </script>
 
