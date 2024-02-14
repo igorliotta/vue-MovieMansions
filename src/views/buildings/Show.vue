@@ -14,12 +14,11 @@ export default {
             confirm : null,
             showForm : false,
             currentPreview: 10,
-
-
+            currentTime : null,
         };
     },
     methods: {
-        fetchProject() {
+        fetchBuilding() {
             axios.get(`${store.BASE_URL}/buildings/${this.$route.params.slug}`)
                 .then((res) => {
             //console.log(res.data)
@@ -73,11 +72,64 @@ export default {
         activePreview(ind){
             this.currentPreview = ind
             console.log(this.currentPreview)
+        },
+        getIpAddress() {
+        try {
+            //PROVA A recuperare l'indirizzo ip da ipify
+            axios.get("https://api.ipify.org?format=json")
+            .then(response => {
+                const ipAddress = response.data.ip;
+                console.log(response.data)
+                this.sendIpAddressToLaravel(ipAddress);
+            })
+        } catch (error) {
+            console.error("Errore nel recupero dell'indirizzo IP:", error);
         }
+        },
+        sendIpAddressToLaravel(ipAddress) {
+        // Invia l'indirizzo IP a Laravel. LA CHIAMIAMO NELL'HOOK UPDATE(vedi giù)
+        if(this.building) {
+            axios.post(`${store.BASE_URL}/visits`, { 
+                //passiamo un oggetto contenente tutte le info
+            'ip_address': ipAddress,
+            'building_id': this.building.id,
+            'time': this.currentTime,
+            })
+            .then(response => {
+            console.log("Indirizzo IP inviato con successo a Laravel:", response.data);
+            })
+            .catch(error => {
+            console.error("Errore nell'invio dell'indirizzo IP a Laravel:", error);
+            });
+        }
+        
+        },
+        getCurrentTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const day = now.getDate();
+        const seconds = now.getSeconds();
+
+        // Formatta l'orario come lo vuole salvato il server: YYYY/MM/DD hh:mm:ss
+        this.currentTime = `${this.formatTime(year)}/${this.formatTime(month)}/${this.formatTime(day)} ${this.formatTime(hours)}:${this.formatTime(minutes)}:${this.formatTime(seconds)}`;
+        },
+        formatTime(value) {
+            //aggiunge uno 0 ai numeri minori di 10 per rispettare il salvataggio
+        return value < 10 ? `0${value}` : value;
+        },
     },
-  created() {
-    this.fetchProject()
-  }
+    created() {
+        this.fetchBuilding();
+        this.getCurrentTime();
+    },
+    updated() {
+        this.getIpAddress(); 
+        //al montaggio della pagina NON abbiamo il building.id perchè ci arriva dal server
+        //bisogna aspettare che arrivi con Axios. per questo lo metto in updated!
+    },
 };
 </script>
 
