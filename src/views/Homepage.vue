@@ -23,7 +23,7 @@ export default {
     },
     mounted() {
         setInterval(() => {
-            this.carouselGO();
+            this.carouselGO(); 
         }, 2000);
     },
 
