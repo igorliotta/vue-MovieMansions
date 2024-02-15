@@ -15,7 +15,7 @@ export default {
     mounted() {
         setInterval(() => {
             this.carouselGO(); 
-        }, 3000);
+        }, 1500);
     },
 
 }
@@ -72,11 +72,9 @@ export default {
 
 .hide {
     opacity: 0; 
-    transition: all 0.2s ease-in;
     scale: 0.5; 
-}
-.no-hide {
-    scale: 1; 
+    transform: translate(-100%, 0);
+    transition: all 0.2s ease-in;
 }
 
 .img-holder {
@@ -91,7 +89,7 @@ export default {
         width: 40%; 
         margin-top: -40px; 
         opacity: 1;
-        scale: 1.1; 
+        scale: 1; 
         transition: all 0.2s ease-in;
     }
 
