@@ -4,27 +4,18 @@ export default {
     data() {
         return {
             currentElement : 0,
-            currentClass: '', 
         }
     },
     methods : {
         carouselGO(){
             this.currentElement = (this.currentElement + 1) % 5;
-            if(this.currentElement === 1){
-                this.currentClass = '.second'
-            } else if (this.currentElement === 2){
-                this.currentClass = '.third'
-            }else if (this.currentElement === 3){
-                this.currentClass = '.fourth'            
-            }else {
-                this.currentClass = '.fifth'
-            }
+            this.currentImage = ''
         },
     },
     mounted() {
         setInterval(() => {
             this.carouselGO(); 
-        }, 2000);
+        }, 3000);
     },
 
 }
@@ -34,7 +25,7 @@ export default {
 
 <template >
 
-    <div class="hero-c" :class="currentClass">
+    <div class="hero-c">
         <div class="text-wrap">
             <div class="title">
                 <span class="t-green">Movie</span>
@@ -43,6 +34,19 @@ export default {
             <div class="description">
                 <p>Prenditi una vacanza nelle case set dei tuoi film preferiti</p>
             </div>
+        </div>
+        
+        <div class="img-holder"  :class="currentElement !== 1 ? 'hide' : ''">
+            <img v-show="currentElement === 1" key="1" src="../assets/homepage/collage0.png" :class="currentElement !== 1 ? 'hide' : ''" />
+        </div>
+        <div class="img-holder" :class="currentElement !== 2 ? 'hide' : ''">
+            <img v-show="currentElement === 2" key="2" src="../assets/homepage/collage1.png" :class="currentElement !== 2 ? 'hide' : ''" />
+        </div>
+        <div class="img-holder" :class="currentElement !== 3 ? 'hide' : ''">
+            <img v-show="currentElement === 3" key="3" src="../assets/homepage/collage2.png" :class="currentElement !== 3 ? 'hide' : ''" />
+        </div>
+        <div class="img-holder" :class="currentElement !== 4 ? 'hide' : ''">
+            <img v-show="currentElement === 4" key="4" src="../assets/homepage/collage3.png" :class="currentElement !== 4 ? 'hide' : ''" />
         </div>
 
         <div class="action">
@@ -63,6 +67,59 @@ export default {
     background-size: cover;
     background-position: bottom;
     position: relative; 
+
+}
+
+.hide {
+    opacity: 0; 
+    transition: all 0.2s ease-in;
+    scale: 0.5; 
+}
+.no-hide {
+    scale: 1; 
+}
+
+.img-holder {
+    display: flex; 
+    align-items: center;
+    justify-content: center;  
+    opacity: 1; 
+    transition: all 0.2s ease-in;
+
+
+    img {
+        width: 40%; 
+        margin-top: -40px; 
+        opacity: 1;
+        scale: 1.1; 
+        transition: all 0.2s ease-in;
+    }
+
+}
+.action {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    color: white; 
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .wrap {
+        background-color: rgba($color: #06323B , $alpha: 0.7);
+        text-align: center;
+        padding: 5px; 
+    }
+
+    .a{
+        text-decoration: underline;
+    }
+
+    p {
+        font-size: 18px; 
+    }
 }
 
 .text-wrap {
@@ -98,31 +155,17 @@ export default {
 
 }
 
-.action {
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center;
-    color: white; 
-    position: absolute; 
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    .wrap {
-        background-color: rgba($color: #06323B , $alpha: 0.7);
-        text-align: center;
-        padding: 5px; 
-    }
-
-    .a{
-        text-decoration: underline;
-    }
-
-    p {
-        font-size: 18px; 
-    }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
 }
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+
+
+
+
 
 
 /* Stili per desktop (e dispositivi più grandi) */
