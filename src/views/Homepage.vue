@@ -3,27 +3,29 @@
 export default {
     data() {
         return {
-            titles : [
-                "Padme Palace",
-                "Il Padrino: la casa",
-                "Villa di Bruce Wayne",
-                "Mamma ho perso l'aereo",
-                "Scarface House", 
-                "House of Gucci",
-                "Hogwarts",
-                "Privet Drive n.4",
-                "Casa Baggins",
-                "Casa di Jep Gambardella",
-                "la Marinella di Montalbano"
-            ]
+            currentElement : 0,
+            currentClass: '', 
         }
     },
     methods : {
-
-        showTitle(array){
-            
-        }
-    }
+        carouselGO(){
+            this.currentElement = (this.currentElement + 1) % 5;
+            if(this.currentElement === 1){
+                this.currentClass = '.second'
+            } else if (this.currentElement === 2){
+                this.currentClass = '.third'
+            }else if (this.currentElement === 3){
+                this.currentClass = '.fourth'            
+            }else {
+                this.currentClass = '.fifth'
+            }
+        },
+    },
+    mounted() {
+        setInterval(() => {
+            this.carouselGO();
+        }, 2000);
+    },
 
 }
 
@@ -32,7 +34,7 @@ export default {
 
 <template >
 
-    <div class="hero-c">
+    <div class="hero-c" :class="currentClass">
         <div class="text-wrap">
             <div class="title">
                 <span class="t-green">Movie</span>
