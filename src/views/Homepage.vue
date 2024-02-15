@@ -73,24 +73,25 @@ export default {
 .hide {
     opacity: 0; 
     scale: 0.5; 
-    transform: translate(-100%, 0);
+    transform: translate(-20%, 0);
     transition: all 0.2s ease-in;
 }
 
 .img-holder {
     display: flex; 
+    justify-content: center;
     align-items: center;
-    justify-content: center;  
     opacity: 1; 
     transition: all 0.2s ease-in;
+    
 
 
     img {
-        width: 40%; 
-        margin-top: -40px; 
+        width: 25%; 
         opacity: 1;
         scale: 1; 
         transition: all 0.2s ease-in;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     }
 
 }
@@ -100,11 +101,10 @@ export default {
     justify-content: center; 
     align-items: center;
     color: white; 
-    position: absolute; 
-    top: 50%;
+    position: absolute;  
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     .wrap {
         background-color: rgba($color: #06323B , $alpha: 0.7);
         text-align: center;
@@ -153,12 +153,6 @@ export default {
 
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
 
 
 
