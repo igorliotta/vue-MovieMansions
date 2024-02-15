@@ -8,14 +8,13 @@ export default {
     },
     methods : {
         carouselGO(){
-            this.currentElement = (this.currentElement + 1) % 5;
-            this.currentImage = ''
+            this.currentElement = (this.currentElement + 1) % 6;
         },
     },
     mounted() {
         setInterval(() => {
             this.carouselGO(); 
-        }, 1500);
+        }, 1000);
     },
 
 }
@@ -36,17 +35,17 @@ export default {
             </div>
         </div>
         
-        <div class="img-holder"  :class="currentElement !== 1 ? 'hide' : ''">
-            <img v-show="currentElement === 1" key="1" src="../assets/homepage/collage0.png" :class="currentElement !== 1 ? 'hide' : ''" />
+        <div class="img-holder"  :class="currentElement === 0 ? 'hide' : ''">
+            <img  key="1" src="../assets/homepage/collage0.png" :class="currentElement !== 1 ? 'hide' : ''" />
         </div>
-        <div class="img-holder" :class="currentElement !== 2 ? 'hide' : ''">
-            <img v-show="currentElement === 2" key="2" src="../assets/homepage/collage1.png" :class="currentElement !== 2 ? 'hide' : ''" />
+        <div class="img-holder lft " :class="currentElement === 0 ? 'hide' : ''">
+            <img  key="2" src="../assets/homepage/collage1.png" :class="currentElement === 2 ? 'hide' : ''" />
         </div>
-        <div class="img-holder" :class="currentElement !== 3 ? 'hide' : ''">
-            <img v-show="currentElement === 3" key="3" src="../assets/homepage/collage2.png" :class="currentElement !== 3 ? 'hide' : ''" />
+        <div class="img-holder btm" :class="currentElement === 0 ? 'hide' : ''">
+            <img  key="3" src="../assets/homepage/collage2.png" :class="currentElement !== 3 ? 'hide' : ''" />
         </div>
-        <div class="img-holder" :class="currentElement !== 4 ? 'hide' : ''">
-            <img v-show="currentElement === 4" key="4" src="../assets/homepage/collage3.png" :class="currentElement !== 4 ? 'hide' : ''" />
+        <div class="img-holder rgt" :class="currentElement === 0 ? 'hide' : ''">
+            <img  key="4" src="../assets/homepage/collage3.png" :class="currentElement !== 4 ? 'hide' : ''" />
         </div>
 
         <div class="action">
@@ -72,29 +71,55 @@ export default {
 
 .hide {
     opacity: 0; 
-    scale: 0.5; 
-    transform: translate(-20%, 0);
+    scale: 0.3; 
+    transform: translate(40px, -10px);
     transition: all 0.2s ease-in;
 }
 
 .img-holder {
     display: flex; 
-    justify-content: center;
+    justify-content: center ;
     align-items: center;
     opacity: 1; 
     transition: all 0.2s ease-in;
-    
-
+    position: absolute; 
+    top: 40px; 
+    left: 0; 
+    right: 0; 
 
     img {
-        width: 25%; 
-        opacity: 1;
+        width: 22%; 
+        opacity: 0.8;
         scale: 1; 
         transition: all 0.2s ease-in;
         box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     }
-
 }
+.lft {
+    left: 20px; 
+    right: 20px;
+    bottom: 70px; 
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.btm {
+    bottom: 20px; 
+    align-items: flex-end;
+    left: 0; 
+    right: 0;
+    justify-content: center;
+}
+
+.rgt{
+    bottom: 90px; 
+    left: 0px; 
+    right: 60px;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+
 .action {
     display: flex; 
     flex-direction: column; 
@@ -102,7 +127,7 @@ export default {
     align-items: center;
     color: white; 
     position: absolute;  
-    top: 30%;
+    top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
     .wrap {
@@ -175,7 +200,6 @@ export default {
     }
 
     .action {
-        margin-top: 10px; 
         .wrap {
             font-size: 18px; 
 
@@ -207,7 +231,7 @@ font-size: 28px;
 @media (max-width: 768px) {
     /* Stili per tablet orizzontale e desktop medium */
     .action {
-        margin-top: 20px; 
+        margin-top: 40px; 
     }
 }
 
@@ -228,6 +252,43 @@ font-size: 28px;
             text-align: right; 
         }
     }
+
+    .img-holder {
+    top: 180px; 
+    left: 0; 
+    right: 0; 
+
+    img {
+        width: 40%; 
+        opacity: 0.8;
+        scale: 1; 
+        transition: all 0.2s ease-in;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    }
+}
+.lft {
+    left: 20px; 
+    right: 20px;
+    bottom: 250px; 
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.btm {
+    bottom: 60px; 
+    align-items: flex-end;
+    left: 0; 
+    right: 0;
+    justify-content: center;
+}
+
+.rgt{
+    bottom: 220px; 
+    left: 0px; 
+    right: 60px;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
 
     .action {
         margin-top: 60px; 
