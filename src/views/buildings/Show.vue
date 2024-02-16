@@ -14,12 +14,11 @@ export default {
             confirm : null,
             showForm : false,
             currentPreview: 10,
-
-
+            currentTime : null,
         };
     },
     methods: {
-        fetchProject() {
+        fetchBuilding() {
             axios.get(`${store.BASE_URL}/buildings/${this.$route.params.slug}`)
                 .then((res) => {
             //console.log(res.data)
@@ -73,11 +72,64 @@ export default {
         activePreview(ind){
             this.currentPreview = ind
             console.log(this.currentPreview)
+        },
+        getIpAddress() {
+        try {
+            //PROVA A recuperare l'indirizzo ip da ipify
+            axios.get("https://api.ipify.org?format=json")
+            .then(response => {
+                const ipAddress = response.data.ip;
+                console.log(response.data)
+                this.sendIpAddressToLaravel(ipAddress);
+            })
+        } catch (error) {
+            console.error("Errore nel recupero dell'indirizzo IP:", error);
         }
+        },
+        sendIpAddressToLaravel(ipAddress) {
+        // Invia l'indirizzo IP a Laravel. LA CHIAMIAMO NELL'HOOK UPDATE(vedi giù)
+        if(this.building) {
+            axios.post(`${store.BASE_URL}/visits`, { 
+                //passiamo un oggetto contenente tutte le info
+            'ip_address': ipAddress,
+            'building_id': this.building.id,
+            'time': this.currentTime,
+            })
+            .then(response => {
+            console.log("Indirizzo IP inviato con successo a Laravel:", response.data);
+            })
+            .catch(error => {
+            console.error("Errore nell'invio dell'indirizzo IP a Laravel:", error);
+            });
+        }
+        
+        },
+        getCurrentTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const day = now.getDate();
+        const seconds = now.getSeconds();
+
+        // Formatta l'orario come lo vuole salvato il server: YYYY/MM/DD hh:mm:ss
+        this.currentTime = `${this.formatTime(year)}/${this.formatTime(month)}/${this.formatTime(day)} ${this.formatTime(hours)}:${this.formatTime(minutes)}:${this.formatTime(seconds)}`;
+        },
+        formatTime(value) {
+            //aggiunge uno 0 ai numeri minori di 10 per rispettare il salvataggio
+        return value < 10 ? `0${value}` : value;
+        },
     },
-  created() {
-    this.fetchProject()
-  }
+    created() {
+        this.fetchBuilding();
+        this.getCurrentTime();
+    },
+    updated() {
+        this.getIpAddress(); 
+        //al montaggio della pagina NON abbiamo il building.id perchè ci arriva dal server
+        //bisogna aspettare che arrivi con Axios. per questo lo metto in updated!
+    },
 };
 </script>
 
@@ -137,8 +189,8 @@ export default {
                     </span>
                 </div>
                 <div class="form-head">
-                    <p class="text-center mb-0">Vuoi saperne di più o prenotare? <span class="text-green">Contatta l'host!</span></p>
-                    <span @click="toggleForm()" class="src-icon">
+                    <p class=" txt-form text-center mb-0">Vuoi saperne di più o prenotare? <span class="text-green">Contatta l'host!</span></p>
+                    <span @click="toggleForm()" class="src-icon btn-pen">
                         <i class="fa-solid fa-pen"></i>
                     </span>
                 </div>
@@ -286,6 +338,11 @@ export default {
         gap: 5px; 
         margin-bottom: 20px; 
 
+        input,
+        textarea {
+            padding-left: 8px;
+        }
+
         .btn-wrap {
             display: flex; 
             justify-content: center;
@@ -305,5 +362,88 @@ export default {
         }
 
     }
+
+    /* Stili per desktop (e dispositivi più grandi) */
+@media (min-width: 1200px) {
+}
+
+@media (max-width: 992px) {
+    /* Stili per desktop large */
+
+    .wrap-images {
+        flex-direction: column; 
+    }
+
+    .thumb {
+        width: 500px;
+        height: 250px; 
+    }
+    .thumb:hover {
+        width: 600px; 
+        height: 300px; 
+    }
+
+    .images-preview {
+        flex-direction: row; 
+    }
+
+    .preview-wrap {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Stili per tablet orizzontale e desktop medium */
+    .thumb {
+        width: 400px;
+        height: 250px; 
+    }
+    .thumb:hover {
+        width: 500px; 
+        height: 280px; 
+    }
+
+    .form-wrap {
+        left: 20%; 
+        right: 20%; 
+    }
+}
+
+/* Stili per tablet verticale */
+@media (max-width: 576px) {
+
+    .txt-form {
+        display: none; 
+    }
+
+    .form-wrap {
+        left: 10%; 
+        right: 10%;
+        padding: 0; 
+        // height: 20px; 
+
+    }
+
+    .description {
+        font-size: 12px; 
+    }
+
+    .tags {
+        font-size: 10px; 
+    }
+}
+
+/* Stili per smartphone e dispositivi più piccoli */
+@media (max-width: 575px) {
+
+    .thumb {
+        width: 300px;
+        height: 250px; 
+    }
+    .thumb:hover {
+        width: 360px; 
+        height: 290px; 
+    }
+}
 
 </style>
