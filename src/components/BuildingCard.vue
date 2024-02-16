@@ -5,7 +5,6 @@ export default {
     },
     data() {
         return {
-
         }
     },
     methods: {
@@ -54,6 +53,7 @@ export default {
                             <i v-else-if="service.name === 'Animali ammessi'" class="fa-solid fa-paw"></i>
                             <i v-else-if="service.name === 'Reception 24 ore'" class="fa-solid fa-bell-concierge"></i>
                         </span>
+                        <span v-for="sponsorship in building.sponsorships">{{ sponsorship.name }}</span>
                     </div>
                 </div>
             </div>
