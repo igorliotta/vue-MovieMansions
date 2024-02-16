@@ -23,7 +23,7 @@ export default {
         }, 1000);
         setTimeout(() => {
             this.mansionsGO();
-        }, 1500);
+        }, 1700);
         setTimeout(() => {
             this.titleSTOP();
         }, 3000);
@@ -182,6 +182,12 @@ export default {
 
 .home-title.active-title span:nth-child(6) {
     transition-delay: 0.5s;
+}
+.home-title.active-title span:nth-child(7) {
+    transition-delay: 0.6s;
+}
+.home-title.active-title span:nth-child(8) {
+    transition-delay: 0.7s;
 }
 
 
