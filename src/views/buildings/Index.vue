@@ -13,10 +13,10 @@ export default {
             search: '',
             searchResults: [],
             menuVisible: false,
-            currentPage: 1,
-            startPage: 1,
-            itemsPerPage: 10,
-            totalPages: 1,
+            // currentPage: 1,
+            // startPage: 1,
+            // itemsPerPage: 10,
+            // totalPages: 1,
             bedsOptions: [
                 { value: 'all', label: 'Tutti' },
                 { value: 'range_1', label: 'Fino a 25 letti' },
@@ -95,11 +95,23 @@ export default {
                     },
                 })
                 .then((res) => {
-                    console.log('Risposta API:', res.data.buildings);
-                    this.totalPages = Math.ceil(res.data.buildings.length / this.itemsPerPage);
-                    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-                    const endIndex = startIndex + this.itemsPerPage;
-                    store.buildings = res.data.buildings.slice(startIndex, endIndex);
+                    console.log('Risposta API:', res.data);
+                    // this.totalPages = Math.ceil(res.data.buildings.length / this.itemsPerPage);
+                    // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+                    // const endIndex = startIndex + this.itemsPerPage;
+                    // if (this.searchResults.length > 0) {
+                    //     store.sponsoredBuildings = [];
+                    //     store.buildings = res.data.buildings;
+                    //     console.log('tutti', store.buildings, 'sponsorizzati', store.sponsoredBuildings);
+                    // } else {
+                    //     // Se c'è una ricerca, mostriamo tutti i building
+                    //     store.sponsoredBuildings = res.data.sponsoredBuildings;
+                    //     store.buildings = [];
+                    //     console.log('sponsorizzati', store.sponsoredBuildings, 'tutti', store.buildings);
+                    // }
+                    // store.sponsoredBuildings = res.data.sponsoredBuildings;
+                    store.buildings = res.data.buildings;
+
                 })
                 .catch((error) => {
                     console.error('Errore nella richiesta edifici:', error);
@@ -120,19 +132,30 @@ export default {
             this.searchResults = [];
             this.getApiBuildings();
         },
-        goToPage(page) {
-            if (page >= 1 && page <= this.totalPages) {
-                this.currentPage = page;
-                this.getApiBuildings();
+        // goToPage(page) {
+        //     if (page >= 1 && page <= this.totalPages) {
+        //         this.currentPage = page;
+        //         this.getApiBuildings();
 
-                const element = document.getElementById('top');
-                if (element) {
-                    element.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
+        //         const element = document.getElementById('top');
+        //         if (element) {
+        //             element.scrollIntoView({
+        //                 behavior: 'smooth',
+        //                 block: 'start'
+        //             });
+        //         }
+        //     }
+        // },
+        resetFilters() {
+            this.search = '';
+            this.searchResults = [];
+            this.menuVisible = false;
+            this.currentPage = 1;
+            this.store.radius = '50000';
+            this.store.roomsFilter = 'all';
+            this.store.bedsFilter = 'all';
+            this.store.bathsFilter = 'all';
+            this.selectedServices = [];
         },
     },
     watch: {
@@ -168,6 +191,7 @@ export default {
         } else {
             this.getApiBuildings();
         }
+        this.resetFilters();
     }
 };
 </script>
@@ -190,16 +214,18 @@ export default {
                         </ul>
                     </div>
                 </div>
-                <button class="btn-filters" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
-                    aria-expanded="false" aria-controls="collapseExample">
-                    <img src="/equalizer_filter_filtering_mixer_sorting_icon_123287.png" alt="">
+                <button class="btn-filters setting-btn" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <span class="bar bar1"></span>
+                    <span class="bar bar2"></span>
+                    <span class="bar bar1"></span>
                 </button>
             </div>
             <!-- Inizio collpase filtri -->
-            <div class="collapse" id="collapseExample" style="min-width: 400px;">
+            <div class="collapse me-5" id="collapseExample">
                 <div class="card card-body shadow-sm">
                     <div class=" row">
-                        <div class="col-6 d-flex flex-column justify-content-center gap-5">
+                        <div class="select-filter col-12 d-flex justify-content-around">
                             <!-- Raggio -->
                             <div class="ray-container">
                                 <label class="label" for="radius">Raggio</label>
@@ -274,9 +300,9 @@ export default {
                             </div>
                         </div>
                         <!-- Servizi -->
-                        <div class="col-6">
-                            <div class="services container d-flex flex-column">
-                                <div class="services form-check ps-0 w-100" v-for="service in servicesOptions"
+                        <div class="col-12">
+                            <div class="services-filter">
+                                <div class="services form-check ps-0 text-center" v-for="service in servicesOptions"
                                     :key="service.value">
                                     <input type="checkbox" class="btn-check" name="options-outlined" :id="service.value"
                                         v-model="selectedServices" :value="service" />
@@ -293,20 +319,28 @@ export default {
 
         <div class="section-building">
             <div class="container">
-                <div v-if="store.buildings.length > 0" class="row cards">
+                <h2>Appartamenti in evidenza</h2>
+
+                <div class="row cards">
                     <BuildingCard v-for="building in store.buildings" :building="building" :key="building.id" />
+
                 </div>
-                <div class="loading" v-else>
-                    <p>Non ci sono risultati</p>
-                </div>
+
+                <!-- <div v-else>
+                    <h2>Appartamenti in evidenza</h2>
+                    <div class="row cards">
+                        <BuildingCard v-for="building in store.sponsoredBuildings" :building="building"
+                            :key="building.id" />
+                    </div>
+                </div> -->
             </div>
         </div>
-        <div class="section pb-3">
+        <!-- <div class="section pb-3">
             <div class="pagination justify-content-center align-items-center gap-4">
                 <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1"
                     class="btn btn-sm btn-outline-warning text-dark border border-0">Prev</button>
 
-                <!-- Visualizza i numeri di pagina precedenti solo se ci sono più di una pagina -->
+            
                 <template v-for="pageNumber in Math.min(totalPages, 1)" :key="pageNumber">
                     <button @click="goToPage(pageNumber)"
                         :class="{ 'btn btn-sm btn-outline-warning text-dark': pageNumber === currentPage, 'btn btn-sm btn-outline-secondary': pageNumber !== currentPage }">
@@ -314,12 +348,12 @@ export default {
                     </button>
                 </template>
 
-                <!-- Aggiungi puntini se ci sono più di due pagine -->
+              
                 <template v-if="totalPages > 1">
                     <span>...</span>
                 </template>
 
-                <!-- Visualizza i numeri di pagina successivi solo se ci sono più di due pagine e la pagina corrente non è nell'ultima coppia -->
+                
                 <template v-if="totalPages > 3 && currentPage < totalPages - 1">
                     <button @click="goToPage(currentPage + 1)"
                         :class="{ 'btn btn-sm btn-outline-warning text-dark': currentPage + 1 === currentPage, 'btn btn-sm btn-outline-secondary': currentPage + 1 !== currentPage }">
@@ -327,12 +361,12 @@ export default {
                     </button>
                 </template>
 
-                <!-- Aggiungi puntini se ci sono più di tre pagine e la pagina corrente non è nell'ultima coppia -->
+                
                 <template v-if="totalPages > 3 && currentPage < totalPages - 1">
                     <span>...</span>
                 </template>
 
-                <!-- Visualizza l'ultima pagina -->
+               
                 <button @click="goToPage(totalPages)"
                     :class="{ 'btn btn-sm btn-outline-warning text-dark': totalPages === currentPage, 'btn btn-sm btn-outline-success': totalPages !== currentPage }">
                     {{ totalPages }}
@@ -341,7 +375,7 @@ export default {
                 <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages"
                     class="btn btn-sm btn-outline-warning text-dark border border-0">Next</button>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -387,18 +421,6 @@ export default {
             &:hover {
                 background-color: #5b8e819d;
             }
-        }
-    }
-
-    .btn-filters {
-        border-radius: 50px;
-        border: none;
-        background-color: #5b8e81;
-        padding: 5px;
-
-        img {
-            width: 25px;
-            filter: invert(100%);
         }
     }
 
@@ -490,5 +512,82 @@ select {
 
 .button:hover {
     color: #D1BE68;
+}
+
+.services-filter {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 5px;
+}
+
+.select-filter {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.collapse select {
+    width: 130px;
+}
+
+.ray-container,
+.rooms-container,
+.beds-container,
+.baths-container {
+    width: 130px;
+}
+
+// Bottone filtri
+.setting-btn {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background-color: #5b8e81;
+    border-radius: 50px;
+    cursor: pointer;
+    border: none;
+    // box-shadow: 0px 0px 0px 2px rgb(212, 209, 255);
+}
+
+.bar {
+    width: 50%;
+    height: 2px;
+    background-color: rgb(229, 229, 229);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 2px;
+}
+
+.bar::before {
+    content: "";
+    width: 2px;
+    height: 2px;
+    background-color: rgb(126, 117, 255);
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid white;
+    transition: all 0.3s;
+    box-shadow: 0px 0px 5px white;
+}
+
+.bar1::before {
+    transform: translateX(-4px);
+}
+
+.bar2::before {
+    transform: translateX(4px);
+}
+
+.setting-btn:hover .bar1::before {
+    transform: translateX(4px);
+}
+
+.setting-btn:hover .bar2::before {
+    transform: translateX(-4px);
 }
 </style>
