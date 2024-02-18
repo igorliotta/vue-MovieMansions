@@ -25,7 +25,7 @@ export default {
 <template>
     <div class="col-lg-3 col-md-3 col-sm-2">
         <div class="card">
-            <img v-if="building.image" class="card-img-top" :src="'http://127.0.0.1:8000/storage/' + building.image">
+            <img v-if="building.image" class="img-fluid" :src="'http://127.0.0.1:8000/storage/' + building.image">
             <div class="card-body">
                 <h5>
                     <router-link :to="{ name: 'buildings.show', params: { slug: building.slug } }">{{ building.title
@@ -41,21 +41,36 @@ export default {
                     <div class="col p-0 d-flex gap-2 flex-wrap justify-content-center">
                         <!-- Gestiamo i servizi con le icone -->
                         <span class="services" v-for="service in building.services" :key="service.name">
-                            <i v-if="service.name === 'Wi-Fi'" class="fa-solid fa-wifi"></i>
-                            <i v-else-if="service.name === 'Piscina'" class="fa-solid fa-person-swimming"></i>
-                            <i v-else-if="service.name === 'Ristorante'" class="fa-solid fa-utensils"></i>
-                            <i v-else-if="service.name === 'Palestra'" class="fa-solid fa-dumbbell"></i>
-                            <i v-else-if="service.name === 'Servizio in camera'" class="fa-solid fa-door-open"></i>
-                            <i v-else-if="service.name === 'Colazione inclusa'" class="fa-solid fa-mug-saucer"></i>
-                            <i v-else-if="service.name === 'Parcheggio'" class="fa-solid fa-square-parking"></i>
-                            <i v-else-if="service.name === 'Centro benessere'" class="fa-solid fa-spa"></i>
-                            <i v-else-if="service.name === 'Navetta aeroportuale'" class="fa-solid fa-van-shuttle"></i>
-                            <i v-else-if="service.name === 'Animali ammessi'" class="fa-solid fa-paw"></i>
-                            <i v-else-if="service.name === 'Reception 24 ore'" class="fa-solid fa-bell-concierge"></i>
+                            <i v-if="service.name === 'Wi-Fi'" class="fa-solid fa-wifi" title="Wi-Fi"></i>
+                            <i v-else-if="service.name === 'Piscina'" class="fa-solid fa-person-swimming"
+                                title="Piscina"></i>
+                            <i v-else-if="service.name === 'Ristorante'" class="fa-solid fa-utensils"
+                                title="Ristorante"></i>
+                            <i v-else-if="service.name === 'Palestra'" class="fa-solid fa-dumbbell" title="Palestra"></i>
+                            <i v-else-if="service.name === 'Servizio in camera'" class="fa-solid fa-door-open"
+                                title="Servizio in camera"></i>
+                            <i v-else-if="service.name === 'Colazione inclusa'" class="fa-solid fa-mug-saucer"
+                                title="Colazione inclusa"></i>
+                            <i v-else-if="service.name === 'Parcheggio'" class="fa-solid fa-square-parking"
+                                title="Parcheggio"></i>
+                            <i v-else-if="service.name === 'Centro benessere'" class="fa-solid fa-spa"
+                                title="Centro benessere"></i>
+                            <i v-else-if="service.name === 'Navetta aeroportuale'" class="fa-solid fa-van-shuttle"
+                                title="Navetta aeroportuale"></i>
+                            <i v-else-if="service.name === 'Animali ammessi'" class="fa-solid fa-paw"
+                                title="Animali ammessi"></i>
+                            <i v-else-if="service.name === 'Reception 24 ore'" class="fa-solid fa-bell-concierge"
+                                title="Reception 24 ore"></i>
                         </span>
-                        <span v-for="sponsorship in building.sponsorships">{{ sponsorship.name }}</span>
+                        <div class="popular-icon" v-if="building.isSponsored">
+                            <img src="/depositphotos_183585148-stock-illustration-vector-most-popular-gold-sign-transformed.webp"
+                                alt="">
+                        </div>
                     </div>
                 </div>
+                <button class="card-button">
+                    <router-link :to="{ name: 'buildings.show', params: { slug: building.slug } }">More Info</router-link>
+                </button>
             </div>
         </div>
     </div>
@@ -66,16 +81,42 @@ export default {
     padding: 10px;
 }
 
-.card {
-    height: 100%;
-    border: none;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
 
-    &:hover {
-        transform: translateY(-5px);
-        transition: 300ms ease-in-out;
-        cursor: pointer;
+.popular-icon {
+    top: -15px;
+    left: -16px;
+    position: absolute;
+    animation: pulse 2s infinite;
+}
+
+.popular-icon img {
+    width: 70px;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.90);
     }
+
+    70% {
+        transform: scale(1.01);
+    }
+
+    100% {
+        transform: scale(0.90);
+    }
+}
+
+.card {
+    user-select: none;
+    height: 100%;
+    border-radius: 20px;
+    background: #f5f5f5;
+    position: relative;
+    padding: 1.8rem;
+    border: 2px solid #c3c6ce;
+    transition: 0.5s ease-out;
+    overflow: visible;
 
     .card-body {
         display: flex;
@@ -113,6 +154,39 @@ export default {
         border-radius: 10px;
         padding: 2px 8px;
         width: 60%;
+    }
+
+    .card-button {
+        transform: translate(-50%, 125%);
+        width: 60%;
+        border-radius: 1rem;
+        border: none;
+        background-color: #D4C06C;
+        color: white;
+        font-weight: bold;
+        font-size: 1rem;
+        padding: .5rem 1rem;
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        opacity: 0;
+        transition: 0.3s ease-out;
+    }
+
+    &:hover {
+        border-color: #D4C06C;
+        box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+    }
+
+    &:hover .card-button {
+        transform: translate(-50%, 50%);
+        opacity: 1;
+    }
+
+    .sponsor-badge {
+        top: 6px;
+        left: 8px;
     }
 }
 
