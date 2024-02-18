@@ -125,13 +125,12 @@ export default {
             store.bedsFilter = 'all';
             store.bathsFilter = 'all';
             this.selectedServices = [];
-            store.buildings = [];
-            this.getApiBuildings();
             // // Ricarica l'intera pagina
-            // window.location.reload(true);
+            window.location.reload(true);
         },
         resetSearch() {
             this.search = '';
+            this.searchResults = [];
         },
         showMore() {
             this.viewBuildings += 10;
