@@ -131,6 +131,7 @@ export default {
         resetSearch() {
             this.search = '';
             this.searchResults = [];
+            this.menuVisible = false;
         },
         showMore() {
             this.viewBuildings += 10;
