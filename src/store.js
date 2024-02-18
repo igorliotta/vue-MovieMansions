@@ -19,4 +19,5 @@ export const store = reactive({
   bathsFilter: 'all',
   bathrooms: null,
   BASE_URL: "http://127.0.0.1:8000/api",
+  apiKey: 'pqHD68XXAijUehCtM4HFFAVamZjQMA1W',
 });

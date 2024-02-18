@@ -13,10 +13,7 @@ export default {
             search: '',
             searchResults: [],
             menuVisible: false,
-            // currentPage: 1,
-            // startPage: 1,
-            // itemsPerPage: 10,
-            // totalPages: 1,
+            viewBuildings: 10,
             bedsOptions: [
                 { value: 'all', label: 'Tutti' },
                 { value: 'range_1', label: 'Fino a 25 letti' },
@@ -96,22 +93,10 @@ export default {
                 })
                 .then((res) => {
                     console.log('Risposta API:', res.data);
-                    // this.totalPages = Math.ceil(res.data.buildings.length / this.itemsPerPage);
-                    // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-                    // const endIndex = startIndex + this.itemsPerPage;
-                    // if (this.searchResults.length > 0) {
-                    //     store.sponsoredBuildings = [];
-                    //     store.buildings = res.data.buildings;
-                    //     console.log('tutti', store.buildings, 'sponsorizzati', store.sponsoredBuildings);
-                    // } else {
-                    //     // Se c'è una ricerca, mostriamo tutti i building
-                    //     store.sponsoredBuildings = res.data.sponsoredBuildings;
-                    //     store.buildings = [];
-                    //     console.log('sponsorizzati', store.sponsoredBuildings, 'tutti', store.buildings);
-                    // }
-                    // store.sponsoredBuildings = res.data.sponsoredBuildings;
-                    store.buildings = res.data.buildings;
-
+                    store.buildings = res.data.buildings.map(building => {
+                        building.isSponsored = building.sponsorships.length > 0;
+                        return building;
+                    });
                 })
                 .catch((error) => {
                     console.error('Errore nella richiesta edifici:', error);
@@ -132,30 +117,24 @@ export default {
             this.searchResults = [];
             this.getApiBuildings();
         },
-        // goToPage(page) {
-        //     if (page >= 1 && page <= this.totalPages) {
-        //         this.currentPage = page;
-        //         this.getApiBuildings();
-
-        //         const element = document.getElementById('top');
-        //         if (element) {
-        //             element.scrollIntoView({
-        //                 behavior: 'smooth',
-        //                 block: 'start'
-        //             });
-        //         }
-        //     }
-        // },
         resetFilters() {
-            this.search = '';
             this.searchResults = [];
             this.menuVisible = false;
-            this.currentPage = 1;
-            this.store.radius = '50000';
-            this.store.roomsFilter = 'all';
-            this.store.bedsFilter = 'all';
-            this.store.bathsFilter = 'all';
+            store.radius = '50000';
+            store.roomsFilter = 'all';
+            store.bedsFilter = 'all';
+            store.bathsFilter = 'all';
             this.selectedServices = [];
+            store.buildings = [];
+            this.getApiBuildings();
+            // // Ricarica l'intera pagina
+            // window.location.reload(true);
+        },
+        resetSearch() {
+            this.search = '';
+        },
+        showMore() {
+            this.viewBuildings += 10;
         },
     },
     watch: {
@@ -183,7 +162,7 @@ export default {
             if (JSON.stringify(newSelectedServices) !== JSON.stringify(oldSelectedServices)) {
                 this.getApiBuildings();
             }
-        }
+        },
     },
     created() {
         if (this.search !== '') {
@@ -191,21 +170,21 @@ export default {
         } else {
             this.getApiBuildings();
         }
-        this.resetFilters();
-    }
+    },
+
 };
 </script>
 
 <template>
-    <div class="">
+    <div>
         <div id="top"></div>
         <div class="searchbar">
 
             <div class=" address-container col-12">
-                <!-- <label for="address" class="form-label text-secondary mb-0">Cerca destinazioni</label> -->
                 <div class="input-search position-relative">
                     <input type="text" class="form-control" name="search" id="search" v-model="this.search"
                         @input="handleInput" placeholder="Dove: Cerca destinazioni">
+                    <i class="clear-icon fa-solid fa-xmark" @click="resetSearch" v-show="search.length > 0"></i>
                     <div class="menu-autocomplete card position-absolute w-100 radius" :class="{ 'd-none': !menuVisible }">
                         <ul class="list ps-0">
                             <li v-for="(result, index) in searchResults" :key="index" @click="selectResult(result)">
@@ -222,19 +201,30 @@ export default {
                 </button>
             </div>
             <!-- Inizio collpase filtri -->
-            <div class="collapse me-5" id="collapseExample">
+            <div class="collapse big-collapse mt-2" id="collapseExample">
                 <div class="card card-body shadow-sm">
                     <div class=" row">
-                        <div class="select-filter col-12 d-flex justify-content-around">
+                        <div class="select-filter col-6 col-sm-12 d-flex justify-content-around">
                             <!-- Raggio -->
                             <div class="ray-container">
-                                <label class="label" for="radius">Raggio</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <label class="label" for="radius">Raggio</label>
 
-                                <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample0"
-                                    aria-expanded="false" aria-controls="collapseExample0">
-                                    <i class="fa-solid fa-compass"></i>
-                                </span>
-
+                                    <button class="button-select">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                                        </svg>
+                                        <div>
+                                            <span class="src-icon" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseExample0" aria-expanded="false"
+                                                aria-controls="collapseExample0">
+                                                <i class="fa-solid fa-compass"></i>
+                                            </span>
+                                        </div>
+                                    </button>
+                                </div>
                                 <div class="collapse" id="collapseExample0">
                                     <select class="form-select form-select" v-model="store.radius">
                                         <option value="50000">50 km</option>
@@ -245,13 +235,22 @@ export default {
                             </div>
                             <!-- Stanze -->
                             <div class="rooms-container">
-                                <label class="label" for="roomsFilter">Stanze</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <label class="label" for="roomsFilter">Stanze</label>
 
-                                <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample1"
-                                    aria-expanded="false" aria-controls="collapseExample1">
-                                    <i class="fa-solid fa-person-shelter"></i>
-                                </span>
+                                    <button class="button-select">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                                        </svg>
 
+                                        <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample1"
+                                            aria-expanded="false" aria-controls="collapseExample1">
+                                            <i class="fa-solid fa-person-shelter"></i>
+                                        </span>
+                                    </button>
+                                </div>
                                 <div class="collapse" id="collapseExample1">
                                     <select class="form-select form-select" id="roomsFilter" v-model="store.roomsFilter">
                                         <option v-for="option in this.roomsOptions" :value="option.value"
@@ -263,13 +262,22 @@ export default {
                             </div>
                             <!-- Letti -->
                             <div class="beds-container">
-                                <label class="label" for="bedsFilter">Letti</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <label class="label" for="bedsFilter">Letti</label>
 
-                                <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample2"
-                                    aria-expanded="false" aria-controls="collapseExample2">
-                                    <i class="fa-solid fa-bed"></i>
-                                </span>
+                                    <button class="button-select">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                                        </svg>
 
+                                        <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample2"
+                                            aria-expanded="false" aria-controls="collapseExample2">
+                                            <i class="fa-solid fa-bed"></i>
+                                        </span>
+                                    </button>
+                                </div>
                                 <div class="collapse" id="collapseExample2">
                                     <select class="form-select form-select" id="bedsFilter" v-model="store.bedsFilter">
                                         <option v-for="option in this.bedsOptions" :value="option.value"
@@ -281,13 +289,22 @@ export default {
                             </div>
                             <!-- Bagni -->
                             <div class="baths-container">
-                                <label class="label" for="bathsFilter">Bagni</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <label class="label" for="bathsFilter">Bagni</label>
 
-                                <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample3"
-                                    aria-expanded="false" aria-controls="collapseExample3">
-                                    <i class="fa-solid fa-shower"></i>
-                                </span>
+                                    <button class="button-select">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                                        </svg>
 
+                                        <span class="src-icon" data-bs-toggle="collapse" data-bs-target="#collapseExample3"
+                                            aria-expanded="false" aria-controls="collapseExample3">
+                                            <i class="fa-solid fa-shower"></i>
+                                        </span>
+                                    </button>
+                                </div>
                                 <div class="collapse" id="collapseExample3">
                                     <select class="form-select form-select" id="bathsFilter" v-model="store.bathsFilter">
                                         <option v-for="option in this.bathsOptions" :value="option.value"
@@ -296,21 +313,24 @@ export default {
                                         </option>
                                     </select>
                                 </div>
-
                             </div>
                         </div>
                         <!-- Servizi -->
-                        <div class="col-12">
+                        <div class="col-6 col-sm-12">
                             <div class="services-filter">
                                 <div class="services form-check ps-0 text-center" v-for="service in servicesOptions"
                                     :key="service.value">
                                     <input type="checkbox" class="btn-check" name="options-outlined" :id="service.value"
                                         v-model="selectedServices" :value="service" />
-                                    <label class="btn btn-outline-success w-100" :for="service.value">{{ service.label
+                                    <label class="btn btn-outline-success w-100 fw-semibold" :for="service.value">{{
+                                        service.label
                                     }}</label>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <button class="btn reset-bnt" @click="resetFilters">Reset</button>
                     </div>
                 </div>
             </div>
@@ -319,67 +339,45 @@ export default {
 
         <div class="section-building">
             <div class="container">
-                <h2>Appartamenti in evidenza</h2>
-
-                <div class="row cards">
-                    <BuildingCard v-for="building in store.buildings" :building="building" :key="building.id" />
-
+                <div class="row cards" v-if="store.buildings.length > 0">
+                    <BuildingCard v-for="(building, index) in store.buildings.slice(0, viewBuildings)" :building="building"
+                        :key="building.id" />
                 </div>
-
-                <!-- <div v-else>
-                    <h2>Appartamenti in evidenza</h2>
-                    <div class="row cards">
-                        <BuildingCard v-for="building in store.sponsoredBuildings" :building="building"
-                            :key="building.id" />
-                    </div>
-                </div> -->
+                <div class="loading" v-else>
+                    <p>Non ci sono risultati</p>
+                </div>
+                <div class="text-center mt-4">
+                    <button v-if="viewBuildings < store.buildings.length" class="btn load-more-btn" @click="showMore">Mostra
+                        di più
+                    </button>
+                </div>
             </div>
         </div>
-        <!-- <div class="section pb-3">
-            <div class="pagination justify-content-center align-items-center gap-4">
-                <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1"
-                    class="btn btn-sm btn-outline-warning text-dark border border-0">Prev</button>
-
-            
-                <template v-for="pageNumber in Math.min(totalPages, 1)" :key="pageNumber">
-                    <button @click="goToPage(pageNumber)"
-                        :class="{ 'btn btn-sm btn-outline-warning text-dark': pageNumber === currentPage, 'btn btn-sm btn-outline-secondary': pageNumber !== currentPage }">
-                        {{ pageNumber }}
-                    </button>
-                </template>
-
-              
-                <template v-if="totalPages > 1">
-                    <span>...</span>
-                </template>
-
-                
-                <template v-if="totalPages > 3 && currentPage < totalPages - 1">
-                    <button @click="goToPage(currentPage + 1)"
-                        :class="{ 'btn btn-sm btn-outline-warning text-dark': currentPage + 1 === currentPage, 'btn btn-sm btn-outline-secondary': currentPage + 1 !== currentPage }">
-                        {{ currentPage + 1 }}
-                    </button>
-                </template>
-
-                
-                <template v-if="totalPages > 3 && currentPage < totalPages - 1">
-                    <span>...</span>
-                </template>
-
-               
-                <button @click="goToPage(totalPages)"
-                    :class="{ 'btn btn-sm btn-outline-warning text-dark': totalPages === currentPage, 'btn btn-sm btn-outline-success': totalPages !== currentPage }">
-                    {{ totalPages }}
-                </button>
-
-                <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages"
-                    class="btn btn-sm btn-outline-warning text-dark border border-0">Next</button>
-            </div>
-        </div> -->
     </div>
 </template>
 
 <style lang="scss" scoped>
+.button-select {
+    background-color: #ffffff00;
+    color: #5B8E81;
+    width: 3.5em;
+    border: #00000000 0.2em solid;
+    border-radius: 11px;
+    text-align: right;
+    transition: all 0.6s ease;
+}
+
+.button-select svg {
+    width: 20px;
+    position: absolute;
+    display: flex;
+    transition: all 0.6s ease;
+}
+
+.button-select:hover svg {
+    transform: translateX(5px);
+}
+
 .section-building {
     padding: 30px;
     margin-top: 60px;
@@ -388,7 +386,7 @@ export default {
 .searchbar {
     position: fixed;
     z-index: 3;
-    background-color: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(90deg, rgba(209, 219, 217, 0.7) 0%, rgba(238, 241, 235, 0.7) 79%, rgba(245, 246, 247, 0.7) 95%, rgba(245, 246, 247, 0.7) 100%);
     padding: 15px;
     row-gap: 5px;
     display: flex;
@@ -400,12 +398,28 @@ export default {
 
     .label {
         font-size: 12px;
-        margin-right: 10px;
-
     }
 
     .input-search input {
-        box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+        background-color: white;
+        border: none;
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 50px;
+        color: #5B8E81;
+        box-shadow: 0 0.4rem #dfd9d9;
+        cursor: pointer;
+
+        &:focus {
+            border: 2px solid #5B8E81;
+        }
+    }
+
+    .clear-icon {
+        position: absolute;
+        right: 19px;
+        top: 20px;
+        cursor: pointer;
     }
 
     .menu-autocomplete {
@@ -435,7 +449,8 @@ export default {
         margin-right: 20px;
     }
 
-    .src-icon {
+    .src-icon,
+    .arrow {
         color: #5B8E81;
         cursor: pointer;
     }
@@ -443,11 +458,6 @@ export default {
     .src-icon:hover {
         color: #D1BE68;
     }
-}
-
-.active {
-    color: #3b7ed6;
-    font-weight: bold;
 }
 
 .cards {
@@ -479,11 +489,6 @@ export default {
 
     .input-search {
         flex-grow: 1;
-
-        input {
-            border-radius: 50px;
-            border: 1px solid #5B8E81;
-        }
     }
 }
 
@@ -514,15 +519,21 @@ select {
     color: #D1BE68;
 }
 
+.services {
+    width: 150px;
+}
+
 .services-filter {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-gap: 5px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .select-filter {
     text-align: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .collapse select {
@@ -550,6 +561,15 @@ select {
     cursor: pointer;
     border: none;
     // box-shadow: 0px 0px 0px 2px rgb(212, 209, 255);
+}
+
+// Bottone Reset
+.reset-bnt {
+    padding: 2px 32px;
+    background-color: red;
+    border: none;
+    color: white;
+    font-weight: bold;
 }
 
 .bar {
@@ -589,5 +609,47 @@ select {
 
 .setting-btn:hover .bar2::before {
     transform: translateX(-4px);
+}
+
+.big-collapse {
+    width: 60%;
+    margin-right: 15px;
+}
+
+@media (max-width: 575.98px) {
+    .big-collapse {
+        width: 80%;
+        margin-right: 41px;
+    }
+
+    .searchbar label {
+        font-size: 8px;
+    }
+
+    .services {
+        width: 100%;
+    }
+
+    .services-filter {
+        gap: 0px;
+    }
+
+    .select-filter {
+        text-align: start;
+        margin-bottom: 0px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .ray-container,
+    .rooms-container,
+    .beds-container,
+    .baths-container {
+        width: 100%;
+    }
+
+    .collapse select {
+        width: 100%;
+    }
 }
 </style>
