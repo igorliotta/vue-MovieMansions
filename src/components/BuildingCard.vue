@@ -69,7 +69,7 @@ export default {
                     </div>
                 </div>
                 <button class="card-button">
-                    <router-link :to="{ name: 'buildings.show', params: { slug: building.slug } }">More Info</router-link>
+                    <router-link :to="{ name: 'buildings.show', params: { slug: building.slug } }">Dettagli</router-link>
                 </button>
             </div>
         </div>
