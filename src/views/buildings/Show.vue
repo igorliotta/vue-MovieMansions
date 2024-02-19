@@ -173,7 +173,7 @@ export default {
                 </div>
 
                 <div class="preview-wrap">
-                    <p>Clicca sull'immagine per visualizzarla a sinistra</p>
+                    <p>Clicca sull'immagine per visualizzarla</p>
                     <div class="images-preview ">
                         <img class="preview" :class="currentPreview === 10 ? 'active-now' : ''"
                             :src="'http://127.0.0.1:8000/storage/' + building.image" @click="activePreview(10)">
@@ -185,14 +185,59 @@ export default {
 
             </div>
 
-            <div class="container">
+            <div class="container w-75 my-4 shadow py-4 rounded">
+                <div class="d-flex justify-content-center gap-3 align-items-center mb-3"> 
+                    <i class="fa-solid fa-comment-dots text-secondary"></i> 
+                    <h5 class="mb-0 fw-bolder">Descrizione</h5>
+                </div>
                 <p class="description">{{ building.description }}</p>
+            </div>
+
+            <div class="container w-75 my-4 shadow py-4 rounded">
+                <div class="d-flex justify-content-center gap-3 align-items-center mb-3"> 
+                    <i class="fa-solid fa-clipboard text-secondary"></i> 
+                    <h5 class="mb-0 fw-bolder">Lo spazio</h5>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <p class="description mx-4">Numero Stanze: {{ building.rooms }}</p>
+                    <p class="description mx-4">Numero Bagni: {{ building.bathrooms }}</p>
+                    <p class="description mx-4">Numeri Letti: {{ building.beds }}</p>
+                    <p class="description mz-4">Metri Quadrati: {{ building.sqm }}</p>
+                </div>
+              
+            </div>
+
+            <div class="container w-75 my-4 shadow py-4 rounded">
+                <div class="d-flex justify-content-center gap-3 align-items-center mb-3"> 
+                    <i class="fa-solid fa-bell-concierge text-secondary"></i>
+                    <h5 class="text-center fw-bolder">Servizi</h5>
+                </div>
+                <div class="justify-content-center gap-3 align-items-center mb-3"> 
+               
+                
                 <div class="tags" v-if="building.services">
-                    <p v-for="service in building.services">{{ service.name }}</p>
+                    <div class="d-flex justify-content-center align-items-center gap-2" v-for="service in building.services">{{ service.name }}
+                        <img class="service-icon-show" :src="'http://127.0.0.1:8000/storage' + service.icon ">
+                    </div>
+                </div>    
                 </div>
             </div>
 
-            <div id="map" class="map-container"></div>
+            <!-- indirizzo -->
+
+                <div class="container w-75 d-flex align-items-center my-4 shadow py-4 rounded">
+                    <div id="map" class="map-container"></div>
+
+                    <div class="container w-75 my-4">
+                    <div class="d-flex justify-content-center gap-3 align-items-center mb-3"> 
+                        <i class="fa-solid fa-map-pin text-secondary"></i>
+                        <h5 class="mb-0 fw-bolder">Indirizzo</h5>
+                    </div>
+                    <p class="description">{{ building.address }}</p>
+                </div>
+
+            </div>
+          
 
         </div>
 
@@ -246,18 +291,36 @@ export default {
     margin-right: -20px;
 }
 
+// 
 .thumb {
     width: 600px;
     display: none;
     height: 300px;
     object-fit: cover;
-    transition: width ease-out 0.2s;
+    // animation: zoom-in-zoom-out 1s ease infinite;
+    // transition: width ease-out 0.6s;  
 }
 
+
 .thumb:hover {
-    width: 700px;
-    height: 500px;
+    animation: zoom-in-zoom-out 1s ease ;
     margin-top: -25px;
+}
+
+@keyframes zoom-in-zoom-out {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.5, 1.5);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.service-icon-show {
+    width: 28px;
 }
 
 .text-thumb {
@@ -314,17 +377,17 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 3px;
+    gap: 20px;
 
-    p {
-        border-radius: 10px;
-        padding: 2px 8px;
-        border: 2px solid;
-    }
+    // p {
+    //     border-radius: 10px;
+    //     padding: 2px 8px;
+    //     border: 2px solid;
+    // }
 
-    p:hover {
-        border: 2px solid #5B8D81;
-    }
+    // p:hover {
+    //     border: 2px solid #5B8D81;
+    // }
 }
 
 .active-now {
@@ -337,8 +400,8 @@ export default {
     margin: 0 auto;
     position: fixed;
     bottom: 0;
-    left: 30%;
-    right: 30%;
+    left: 65%;
+    right: 2%;
     background-color: rgba(255, 255, 255, 0.95);
     z-index: 3;
     padding: 15px;
@@ -388,7 +451,7 @@ export default {
 }
 
 .map-container {
-    width: 400px;
+    width: 600px;
     height: 400px;
 }
 
@@ -476,5 +539,10 @@ export default {
         width: 360px;
         height: 290px;
     }
+
+    .map-container {
+    width: 200px;
+    height: 200px;
+}
 }
 </style>
