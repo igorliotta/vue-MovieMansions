@@ -165,14 +165,16 @@ export default {
             <div class="wrap-images">
                 <div class="text-thumb">
                     <p>Passa sull'immagine per ingrandirla</p>
-                    <img class="thumb" :src="'http://127.0.0.1:8000/storage/' + building.image"
-                        :class="currentPreview === 10 ? 'active-now' : 'd-none'">
-                    <img v-for="(image, index) in building.images" class="thumb"
-                        :src="'http://127.0.0.1:8000/storage/' + image.url" :key="index"
-                        :class="currentPreview === index ? 'active-now' : 'd-none'">
+                    <div class="view">
+                        <img class="thumb" :src="'http://127.0.0.1:8000/storage/' + building.image"
+                            :class="currentPreview === 10 ? 'active-now' : 'd-none'">
+                        <img v-for="(image, index) in building.images" class="thumb"
+                            :src="'http://127.0.0.1:8000/storage/' + image.url" :key="index"
+                            :class="currentPreview === index ? 'active-now' : 'd-none'">
+                    </div>
                 </div>
 
-                <div class="preview-wrap">
+                <div class="preview-wrap justify-content-center">
                     <p>Clicca sull'immagine per visualizzarla</p>
                     <div class="images-preview ">
                         <img class="preview" :class="currentPreview === 10 ? 'active-now' : ''"
@@ -186,50 +188,51 @@ export default {
             </div>
 
             <div class="container w-75 my-4 shadow py-4 rounded">
-                <div class="d-flex justify-content-center gap-3 align-items-center mb-3"> 
-                    <i class="fa-solid fa-comment-dots text-secondary"></i> 
+                <div class="d-flex justify-content-center gap-3 align-items-center mb-3">
+                    <i class="fa-solid fa-comment-dots text-secondary"></i>
                     <h5 class="mb-0 fw-bolder">Descrizione</h5>
                 </div>
                 <p class="description">{{ building.description }}</p>
             </div>
 
             <div class="container w-75 my-4 shadow py-4 rounded">
-                <div class="d-flex justify-content-center gap-3 align-items-center mb-3"> 
-                    <i class="fa-solid fa-clipboard text-secondary"></i> 
+                <div class="d-flex justify-content-center gap-3 align-items-center mb-3">
+                    <i class="fa-solid fa-clipboard text-secondary"></i>
                     <h5 class="mb-0 fw-bolder">Lo spazio</h5>
                 </div>
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center flex-wrap">
                     <p class="description mx-4">Numero Stanze: {{ building.rooms }}</p>
                     <p class="description mx-4">Numero Bagni: {{ building.bathrooms }}</p>
                     <p class="description mx-4">Numeri Letti: {{ building.beds }}</p>
                     <p class="description mz-4">Metri Quadrati: {{ building.sqm }}</p>
                 </div>
-              
+
             </div>
 
             <div class="container w-75 my-4 shadow py-4 rounded">
-                <div class="d-flex justify-content-center gap-3 align-items-center mb-3"> 
+                <div class="d-flex justify-content-center gap-3 align-items-center mb-3">
                     <i class="fa-solid fa-bell-concierge text-secondary"></i>
                     <h5 class="text-center fw-bolder">Servizi</h5>
                 </div>
-                <div class="justify-content-center gap-3 align-items-center mb-3"> 
-               
-                
-                <div class="tags" v-if="building.services">
-                    <div class="d-flex justify-content-center align-items-center gap-2" v-for="service in building.services">{{ service.name }}
-                        <img class="service-icon-show" :src="'http://127.0.0.1:8000/storage' + service.icon ">
+                <div class="justify-content-center gap-3 align-items-center mb-3">
+
+
+                    <div class="tags" v-if="building.services">
+                        <div class="d-flex justify-content-center align-items-center gap-2"
+                            v-for="service in building.services">{{ service.name }}
+                            <img class="service-icon-show" :src="'http://127.0.0.1:8000/storage' + service.icon">
+                        </div>
                     </div>
-                </div>    
                 </div>
             </div>
 
             <!-- indirizzo -->
 
-                <div class="container w-75 d-flex align-items-center my-4 shadow py-4 rounded">
-                    <div id="map" class="map-container"></div>
+            <div class="container w-75 d-flex align-items-center my-4 shadow py-4 rounded">
+                <div id="map" class="map-container"></div>
 
-                    <div class="container w-75 my-4">
-                    <div class="d-flex justify-content-center gap-3 align-items-center mb-3"> 
+                <div class="container w-75 my-4">
+                    <div class="d-flex justify-content-center gap-3 align-items-center mb-3">
                         <i class="fa-solid fa-map-pin text-secondary"></i>
                         <h5 class="mb-0 fw-bolder">Indirizzo</h5>
                     </div>
@@ -237,7 +240,7 @@ export default {
                 </div>
 
             </div>
-          
+
 
         </div>
 
@@ -292,54 +295,52 @@ export default {
 }
 
 // 
-.thumb {
-    width: 600px;
-    display: none;
-    height: 300px;
+.view .thumb {
+    width: 100%;
+    display: block;
     object-fit: cover;
-    // animation: zoom-in-zoom-out 1s ease infinite;
-    // transition: width ease-out 0.6s;  
+    // transition: width ease-out 0.6s;
+    transform: scale(1);
+    transition: all .2s linear;
 }
 
 
-.thumb:hover {
-    animation: zoom-in-zoom-out 1s ease ;
-    margin-top: -25px;
-}
-
-@keyframes zoom-in-zoom-out {
-  0% {
-    transform: scale(1, 1);
-  }
-  50% {
-    transform: scale(1.5, 1.5);
-  }
-  100% {
-    transform: scale(1, 1);
-  }
+.view .thumb:hover {
+    // width: 620px;
+    // height: 350px;
+    transform: scale(1.1);
 }
 
 .service-icon-show {
     width: 28px;
 }
 
+.view {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
 .text-thumb {
+    width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    p {
-        margin: 0;
-        font-size: 12px;
-    }
+    // p {
+    //     margin: 0;
+    //     font-size: 12px;
+    // }
 }
 
-.text-thumb:hover {
+// .text-thumb:hover {
+//     width: 50%;
 
-    p {
-        display: none;
-    }
-}
+//     p {
+//         display: none;
+//     }
+// }
 
 .preview {
     max-width: 140px;
@@ -465,15 +466,15 @@ export default {
         flex-direction: column;
     }
 
-    .thumb {
-        width: 500px;
-        height: 250px;
-    }
+    // .thumb {
+    //     width: 500px;
+    //     height: 250px;
+    // }
 
-    .thumb:hover {
-        width: 600px;
-        height: 300px;
-    }
+    // .thumb:hover {
+    //     width: 600px;
+    //     height: 300px;
+    // }
 
     .images-preview {
         flex-direction: row;
@@ -487,15 +488,15 @@ export default {
 @media (max-width: 768px) {
 
     /* Stili per tablet orizzontale e desktop medium */
-    .thumb {
-        width: 400px;
-        height: 250px;
-    }
+    // .thumb {
+    //     width: 400px;
+    //     height: 250px;
+    // }
 
-    .thumb:hover {
-        width: 500px;
-        height: 280px;
-    }
+    // .thumb:hover {
+    //     width: 500px;
+    //     height: 280px;
+    // }
 
     .form-wrap {
         left: 20%;
@@ -530,19 +531,14 @@ export default {
 /* Stili per smartphone e dispositivi più piccoli */
 @media (max-width: 575px) {
 
-    .thumb {
-        width: 300px;
-        height: 250px;
-    }
-
-    .thumb:hover {
-        width: 360px;
-        height: 290px;
+    .text-thumb {
+        margin: 0 auto;
+        width: 85%;
     }
 
     .map-container {
-    width: 200px;
-    height: 200px;
-}
+        width: 200px;
+        height: 200px;
+    }
 }
 </style>
