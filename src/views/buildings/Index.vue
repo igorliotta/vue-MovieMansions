@@ -120,7 +120,7 @@ export default {
         resetFilters() {
             this.searchResults = [];
             this.menuVisible = false;
-            store.radius = '50000';
+            store.radius = '100000';
             store.roomsFilter = 'all';
             store.bedsFilter = 'all';
             store.bathsFilter = 'all';
@@ -226,11 +226,9 @@ export default {
                                     </button>
                                 </div>
                                 <div class="collapse" id="collapseExample0">
-                                    <select class="form-select form-select" v-model="store.radius">
-                                        <option value="50000">50 km</option>
-                                        <option value="100000">100 km</option>
-                                        <option value="150000">150 km</option>
-                                    </select>
+                                    <input type="range" class="form-range" min="50000" max="100000" step="25000"
+                                        v-model="store.radius">
+                                    <span class="label">{{ (store.radius / 1000) }} km</span>
                                 </div>
                             </div>
                             <!-- Stanze -->
@@ -365,6 +363,7 @@ export default {
     border-radius: 11px;
     text-align: right;
     transition: all 0.6s ease;
+    line-height: normal;
 }
 
 .button-select svg {
@@ -545,6 +544,23 @@ select {
 .beds-container,
 .baths-container {
     width: 130px;
+}
+
+.form-range {
+    height: 0px;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        background: #5B8E81;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
 }
 
 // Bottone filtri

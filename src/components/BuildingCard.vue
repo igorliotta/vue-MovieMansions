@@ -25,7 +25,27 @@ export default {
 <template>
     <div class="col-lg-3 col-md-3 col-sm-2">
         <div class="card">
-            <img v-if="building.image" class="img-fluid" :src="'http://127.0.0.1:8000/storage/' + building.image">
+            <div :id="'carouselExample-' + building.id" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div v-if="building.image" class="carousel-item active">
+                        <img class="d-block w-100" :src="'http://127.0.0.1:8000/storage' + building.image"
+                            alt="First slide">
+                    </div>
+                    <div v-for="(image, index) in building.images" :key="index" class="carousel-item">
+                        <img class="d-block w-100" :src="'http://127.0.0.1:8000/storage' + image.url" alt="Slide">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" :data-bs-target="'#carouselExample-' + building.id"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" :data-bs-target="'#carouselExample-' + building.id"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
             <div class="card-body">
                 <h5>
                     <router-link :to="{ name: 'buildings.show', params: { slug: building.slug } }">{{ building.title
@@ -34,14 +54,25 @@ export default {
                 <p class="address mb-0 text-center flex-grow-1">{{ building.address }}</p>
                 <div class="row flex-column gap-3">
                     <div class="col p-0 d-flex justify-content-center gap-3">
-                        <p class="details mb-0"><strong>m<sup>2</sup></strong> {{ building.sqm }}</p>
-                        <p class="details mb-0"><i class="fa-solid fa-door-closed"></i> {{ building.rooms }}</p>
-                        <p class="details mb-0"><i class="fa-solid fa-bed"></i> {{ building.beds }}</p>
+                        <div class="d-flex align-items-center gap-1">
+                            <img class="icon-details" src="/icons8-ridimensiona-diagonalmente-64.png" alt="">
+                            <p class="details mb-0">{{ building.sqm }}</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <img class="icon-details" src="/icons8-camera-64.png" alt="">
+                            <p class="details mb-0">{{ building.rooms }}</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <img class="icon-details" src="/icons8-letto-64.png" alt="">
+                            <p class="details mb-0">{{ building.beds }}</p>
+                        </div>
+
                     </div>
                     <div class="col p-0 d-flex gap-2 flex-wrap justify-content-center">
                         <!-- Gestiamo i servizi con le icone -->
-                        <span class="services" v-for="service in building.services" :key="service.name">
-                            <i v-if="service.name === 'Wi-Fi'" class="fa-solid fa-wifi" title="Wi-Fi"></i>
+                        <div class="services" v-for="service in building.services" :key="service.name">
+                            <img class="icon-services" :src="service.icon" alt="">
+                            <!-- <i v-if="service.name === 'Wi-Fi'" class="fa-solid fa-wifi" title="Wi-Fi"></i>
                             <i v-else-if="service.name === 'Piscina'" class="fa-solid fa-person-swimming"
                                 title="Piscina"></i>
                             <i v-else-if="service.name === 'Ristorante'" class="fa-solid fa-utensils"
@@ -60,8 +91,8 @@ export default {
                             <i v-else-if="service.name === 'Animali ammessi'" class="fa-solid fa-paw"
                                 title="Animali ammessi"></i>
                             <i v-else-if="service.name === 'Reception 24 ore'" class="fa-solid fa-bell-concierge"
-                                title="Reception 24 ore"></i>
-                        </span>
+                                title="Reception 24 ore"></i> -->
+                        </div>
                         <div class="popular-icon" v-if="building.isSponsored">
                             <img src="/depositphotos_183585148-stock-illustration-vector-most-popular-gold-sign-transformed.webp"
                                 alt="">
@@ -190,13 +221,18 @@ export default {
     }
 }
 
-.services,
-.details {
+// .services,
+// .details {
 
-    i,
-    strong {
-        color: #5B8E81;
-    }
+//     i,
+//     strong {
+//         color: #5B8E81;
+//     }
 
+// }
+
+.icon-details,
+.icon-services {
+    width: 20px;
 }
 </style>
