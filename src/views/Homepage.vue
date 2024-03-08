@@ -208,7 +208,7 @@ export default {
     transform: translate(-50%, -50%);
 
     .wrap {
-        background-color: rgba($color: #06323B, $alpha: 0.7);
+        // background-color: rgba($color: #06323B, $alpha: 0.7);
         border-radius: 10px;
         text-align: center;
         padding: 5px;
