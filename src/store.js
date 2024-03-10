@@ -11,7 +11,7 @@ export const store = reactive({
   address: "",
   lat: "",
   lon: "",
-  radius: 50000,
+  radius: 100000,
   rooms: null,
   beds: null,
   bedsFilter: 'all',

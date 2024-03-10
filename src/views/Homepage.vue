@@ -3,17 +3,17 @@
 export default {
     data() {
         return {
-            currentElement : 0,
+            currentElement: 0,
         }
     },
-    methods : {
-        movieGO(){
+    methods: {
+        movieGO() {
             this.currentElement = 1;
         },
-        mansionsGO(){
+        mansionsGO() {
             this.currentElement = 2;
         },
-        titleSTOP(){
+        titleSTOP() {
             this.currentElement = 0;
         }
     },
@@ -35,11 +35,10 @@ export default {
 </script>
 
 <template >
-
     <div class="hero-c">
         <div class="text-wrap">
             <div class="title">
-                <div class="home-title t-green" :class="currentElement !== 0 ? 'active-title' : '' ">
+                <div class="home-title t-green" :class="currentElement !== 0 ? 'active-title' : ''">
                     <div class="original">Movie</div>
                     <div class="letters">
                         <span>M</span>
@@ -49,7 +48,7 @@ export default {
                         <span>e</span>
                     </div>
                 </div>
-                <div class="home-title t-gold" :class="currentElement === 2 ? 'active-title' : '' ">
+                <div class="home-title t-gold" :class="currentElement === 2 ? 'active-title' : ''">
                     <div class="original bg-green">Mansions</div>
                     <div class="letters">
                         <span>M</span>
@@ -64,29 +63,28 @@ export default {
                 </div>
             </div>
             <div class="description">
-                <p>Prenditi una vacanza nelle case set dei tuoi film preferiti</p>
+                <p class="fw-bold">Prenditi una vacanza nelle case set dei tuoi film preferiti!</p>
             </div>
         </div>
-        
+
 
         <div class="action">
             <div class="wrap">
-                <p>Pronto a prenotare?</p>
-                <router-link class="a" :to="{name:'buildings.index'}">Ciack, si gira! &rarrw;</router-link>
+                <p class="mb-0">Pronto a prenotare?</p>
+                <img class="ciak" src="/8bit-boing.gif" alt="">
+                <router-link class="a" :to="{ name: 'buildings.index' }">
+                    <i class="fa-solid fa-angles-right"></i></router-link>
             </div>
         </div>
     </div>
-    
-
 </template>
 
 <style lang="scss" scoped>
-
 .hero-c {
     background-image: url(../assets/home_bg.jpeg);
     background-size: cover;
     background-position: bottom;
-    position: relative; 
+    position: relative;
 
 }
 
@@ -183,72 +181,79 @@ export default {
 .home-title.active-title span:nth-child(6) {
     transition-delay: 0.5s;
 }
+
 .home-title.active-title span:nth-child(7) {
     transition-delay: 0.6s;
 }
+
 .home-title.active-title span:nth-child(8) {
     transition-delay: 0.7s;
 }
 
-
+.ciak {
+    width: 110px;
+    filter: grayscale(1) drop-shadow(2px 4px 6px black);
+}
 
 
 .action {
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    color: white; 
-    position: absolute;  
+    color: white;
+    position: absolute;
     top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
+
     .wrap {
-        background-color: rgba($color: #06323B , $alpha: 0.7);
+        // background-color: rgba($color: #06323B, $alpha: 0.7);
+        border-radius: 10px;
         text-align: center;
-        padding: 5px; 
+        padding: 5px;
     }
 
-    .a{
+    .a {
         text-decoration: underline;
     }
 
     p {
-        font-size: 18px; 
+        font-size: 18px;
     }
 }
 
 .text-wrap {
-    display: flex; 
-    justify-content: space-between; 
-    padding: 30px 30px 10px 30px; 
-    gap: 80px; 
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 30px 10px 30px;
+    gap: 80px;
 
     .description {
-        max-width: 200px; 
-        font-size: 20px; 
+        max-width: 200px;
+        font-size: 20px;
 
     }
 
     .title {
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        font-size: 35px; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 35px;
         font-weight: 700;
         background-size: cover;
 
         .t-green {
-            color:  #5A8D80; 
+            color: #5A8D80;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .bg-green {
-            background-color:  #5A8D80;
+            background-color: #5A8D80;
         }
 
         .t-gold {
-            color:  #C6B35D;
+            color: #C6B35D;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
     }
@@ -264,21 +269,22 @@ export default {
 
 /* Stili per desktop (e dispositivi più grandi) */
 @media (min-width: 1200px) {
-    /* Stili per desktop extra-large */
-    .text-wrap{
 
-        .title{
-        font-size: 45px; 
+    /* Stili per desktop extra-large */
+    .text-wrap {
+
+        .title {
+            font-size: 45px;
         }
 
         .description {
-            font-size: 25px; 
+            font-size: 25px;
         }
     }
 
     .action {
         .wrap {
-            font-size: 18px; 
+            font-size: 18px;
 
             p {
                 font-size: 20px;
@@ -288,95 +294,96 @@ export default {
 }
 
 @media (max-width: 992px) {
+
     /* Stili per desktop large */
     .action {
-        margin-top: 20px; 
+        margin-top: 20px;
     }
 
-    .text-wrap{
+    .text-wrap {
 
-.title{
-font-size: 28px; 
-}
+        .title {
+            font-size: 28px;
+        }
 
-.description {
-    font-size: 16px; 
-}
-}
+        .description {
+            font-size: 16px;
+        }
+    }
 }
 
 @media (max-width: 768px) {
+
     /* Stili per tablet orizzontale e desktop medium */
     .action {
-        margin-top: 40px; 
+        margin-top: 40px;
     }
 }
 
 /* Stili per tablet verticale */
 @media (max-width: 576px) {
-    /* Stili per dispositivi più grandi di smartphone, come tablet in modalità verticale */
-    .text-wrap{
-        padding: 60px 10px 30px 10px; 
-        gap: 60px; 
 
-        .title{
-        font-size: 25px; 
-        align-items: flex-start; 
+    /* Stili per dispositivi più grandi di smartphone, come tablet in modalità verticale */
+    .text-wrap {
+        padding: 60px 10px 30px 10px;
+        gap: 60px;
+
+        .title {
+            font-size: 25px;
+            align-items: flex-start;
         }
 
         .description {
-            font-size: 14px; 
-            text-align: right; 
+            font-size: 14px;
+            text-align: right;
         }
     }
 
     .img-holder {
-    top: 180px; 
-    left: 0; 
-    right: 0; 
+        top: 180px;
+        left: 0;
+        right: 0;
 
-    img {
-        width: 40%; 
-        opacity: 0.8;
-        scale: 1; 
-        transition: all 0.2s ease-in;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+        img {
+            width: 40%;
+            opacity: 0.8;
+            scale: 1;
+            transition: all 0.2s ease-in;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+        }
     }
-}
-.lft {
-    left: 20px; 
-    right: 20px;
-    bottom: 250px; 
-    justify-content: flex-start;
-    align-items: flex-end;
-}
 
-.btm {
-    bottom: 60px; 
-    align-items: flex-end;
-    left: 0; 
-    right: 0;
-    justify-content: center;
-}
+    .lft {
+        left: 20px;
+        right: 20px;
+        bottom: 250px;
+        justify-content: flex-start;
+        align-items: flex-end;
+    }
 
-.rgt{
-    bottom: 220px; 
-    left: 0px; 
-    right: 60px;
-    justify-content: flex-end;
-    align-items: flex-end;
-}
+    .btm {
+        bottom: 60px;
+        align-items: flex-end;
+        left: 0;
+        right: 0;
+        justify-content: center;
+    }
+
+    .rgt {
+        bottom: 220px;
+        left: 0px;
+        right: 60px;
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
 
     .action {
-        margin-top: 60px; 
+        margin-top: 60px;
     }
 
-    
+
 }
 
 /* Stili per smartphone e dispositivi più piccoli */
-@media (max-width: 575px) {
-    
-}
-
+@media (max-width: 575px) {}
 </style>

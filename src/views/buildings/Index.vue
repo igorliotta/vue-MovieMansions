@@ -14,6 +14,7 @@ export default {
             searchResults: [],
             menuVisible: false,
             viewBuildings: 10,
+            resultSelected: false,
             bedsOptions: [
                 { value: 'all', label: 'Tutti' },
                 { value: 'range_1', label: 'Fino a 25 letti' },
@@ -115,12 +116,13 @@ export default {
             this.search = result.address.freeformAddress;
             this.menuVisible = false;
             this.searchResults = [];
+            this.resultSelected = true;
             this.getApiBuildings();
         },
         resetFilters() {
             this.searchResults = [];
             this.menuVisible = false;
-            store.radius = '50000';
+            store.radius = '100000';
             store.roomsFilter = 'all';
             store.bedsFilter = 'all';
             store.bathsFilter = 'all';
@@ -226,11 +228,9 @@ export default {
                                     </button>
                                 </div>
                                 <div class="collapse" id="collapseExample0">
-                                    <select class="form-select form-select" v-model="store.radius">
-                                        <option value="50000">50 km</option>
-                                        <option value="100000">100 km</option>
-                                        <option value="150000">150 km</option>
-                                    </select>
+                                    <input type="range" class="form-range" min="50000" max="100000" step="25000"
+                                        v-model="store.radius">
+                                    <span class="label">{{ (store.radius / 1000) }} km</span>
                                 </div>
                             </div>
                             <!-- Stanze -->
@@ -339,6 +339,7 @@ export default {
 
         <div class="section-building">
             <div class="container">
+                <p class="fw-bold mb-1" v-if="resultSelected">{{ store.buildings.length }} alloggi in questa località: {{ search }}</p>
                 <div class="row cards" v-if="store.buildings.length > 0">
                     <BuildingCard v-for="(building, index) in store.buildings.slice(0, viewBuildings)" :building="building"
                         :key="building.id" />
@@ -357,6 +358,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+
 .button-select {
     background-color: #ffffff00;
     color: #5B8E81;
@@ -365,6 +367,7 @@ export default {
     border-radius: 11px;
     text-align: right;
     transition: all 0.6s ease;
+    line-height: normal;
 }
 
 .button-select svg {
@@ -379,7 +382,7 @@ export default {
 }
 
 .section-building {
-    padding: 30px;
+    padding: 30px 0px;
     margin-top: 60px;
 }
 
@@ -461,7 +464,7 @@ export default {
 }
 
 .cards {
-    padding: 10px 20px;
+    padding: 10px 0px;
     row-gap: 30px;
 }
 
@@ -545,6 +548,23 @@ select {
 .beds-container,
 .baths-container {
     width: 130px;
+}
+
+.form-range {
+    height: 0px;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        background: #5B8E81;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
 }
 
 // Bottone filtri
